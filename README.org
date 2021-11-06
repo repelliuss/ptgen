@@ -1,0 +1,5 @@
+* What is this?
+
+PTG will algorithmically generate endless terrains which user will be able to adjust interactively. It is a project for my own learning purposes, currently.
+
+It is in early development stage.
