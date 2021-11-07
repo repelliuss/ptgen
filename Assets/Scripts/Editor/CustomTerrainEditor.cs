@@ -32,11 +32,21 @@ public class CustomTerrainEditor : Editor
     SerializedProperty voronoiMaxHeight;
     SerializedProperty voronoiPeaks;
     SerializedProperty voronoiType;
+
+    SerializedProperty MPDHeightMin;
+    SerializedProperty MPDHeightMax;
+    SerializedProperty MPDHeightDampenerPower;
+    SerializedProperty MPDRoughness;
+
+    SerializedProperty smoothAmount;
+
     bool showRandom = false;
     bool showLoadHeights = false;
     bool showPerlin = false;
     bool showMultiplePerlin = false;
     bool showVoronoi = false;
+    bool showMPD = false;
+    bool showSmooth = false;
 
     void OnEnable()
     {
@@ -66,6 +76,13 @@ public class CustomTerrainEditor : Editor
         voronoiMaxHeight = serializedObject.FindProperty("voronoiMaxHeight");
         voronoiPeaks = serializedObject.FindProperty("voronoiPeaks");
         voronoiType = serializedObject.FindProperty("voronoiType");
+
+        MPDHeightMin = serializedObject.FindProperty("MPDheightMin");
+        MPDHeightMax = serializedObject.FindProperty("MPDheightMax");
+        MPDHeightDampenerPower = serializedObject.FindProperty("MPDheightDampenerPower");
+        MPDRoughness = serializedObject.FindProperty("MPDroughness");
+
+        smoothAmount = serializedObject.FindProperty("smoothAmount");
     }
 
     public override void OnInspectorGUI()
@@ -159,6 +176,31 @@ public class CustomTerrainEditor : Editor
                 terrain.Voronoi();
             }
         }
+
+        showMPD = EditorGUILayout.Foldout(showMPD, "Midpoint Displacement");
+        if (showMPD)
+        {
+            EditorGUILayout.PropertyField(MPDHeightMin, new GUIContent("Height min"));
+            EditorGUILayout.PropertyField(MPDHeightMax, new GUIContent("Height max"));
+            EditorGUILayout.PropertyField(MPDHeightDampenerPower, new GUIContent("Dampener Power"));
+            EditorGUILayout.PropertyField(MPDRoughness, new GUIContent("Roughness"));
+            if (GUILayout.Button("Apply"))
+            {
+                terrain.MidPointDisplacement();
+            }
+        }
+
+        showSmooth = EditorGUILayout.Foldout(showSmooth, "Smooth Terrain");
+        if(showSmooth)
+        {
+            EditorGUILayout.IntSlider(smoothAmount, 1, 10, new GUIContent("smoothAmount"));
+            if (GUILayout.Button("Smooth"))
+            {
+                terrain.Smooth();
+            }
+
+        }
+
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         if (GUILayout.Button("Flatten"))
         {
