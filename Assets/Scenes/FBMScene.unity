@@ -391,13 +391,88 @@ MonoBehaviour:
   randomHeightRange: {x: 0, y: 0.1}
   heightMapTexture: {fileID: 0}
   heightMapScale: {x: 1, y: 1, z: 1}
+  flattenBeforeApply: 1
   perlinXScale: 0.0035
   perlinZScale: 0.0035
   perlinXOffset: 4326
-  perlinZOffset: 1857
+  perlinZOffset: 2759
   perlinOctaves: 7
   perlinPersistance: 0.5
   perlinLacunarity: 2
   perlinHeightScale: 1
+  perlinParams:
+  - perlinXScale: 0.01
+    perlinZScale: 0.01
+    perlinXOffset: 0
+    perlinZOffset: 0
+    perlinOctaves: 4
+    perlinPersistance: 0.5
+    perlinLacunarity: 2
+    perlinHeightScale: 1
+    active: 1
+    remove: 0
+  voronoiFallOff: 0.2
+  voronoiDropOff: 0.6
+  voronoiMinHeight: 0.1
+  voronoiMaxHeight: 0.5
+  voronoiPeaks: 5
+  voronoiType: 0
+  MPDheightMin: -2
+  MPDheightMax: 2
+  MPDheightDampenerPower: 2
+  MPDroughness: 2
+  smoothAmount: 2
+  splatHeights:
+  - texture: {fileID: 0}
+    minHeight: 0.1
+    maxHeight: 0.2
+    minSlope: 0
+    maxSlope: 1.5
+    tileOffset: {x: 0, y: 0}
+    tileSize: {x: 50, y: 50}
+    splatOffset: 0.1
+    splatNoiseXScale: 0.01
+    splatNoiseYScale: 0.01
+    splatNoiseScaler: 0.1
+    remove: 0
+  vegetation:
+  - mesh: {fileID: 0}
+    minHeight: 0.1
+    maxHeight: 0.2
+    minSlope: 0
+    maxSlope: 90
+    minScale: 0.5
+    maxScale: 1
+    colour1: {r: 1, g: 1, b: 1, a: 1}
+    colour2: {r: 1, g: 1, b: 1, a: 1}
+    lightColour: {r: 1, g: 1, b: 1, a: 1}
+    minRotation: 0
+    maxRotation: 360
+    density: 0.5
+    remove: 0
+  maxTrees: 5000
+  treeSpacing: 5
+  details:
+  - prototype: {fileID: 0}
+    prototypeTexture: {fileID: 0}
+    minHeight: 0.1
+    maxHeight: 0.2
+    minSlope: 0
+    maxSlope: 1
+    dryColour: {r: 1, g: 1, b: 1, a: 1}
+    healthyColour: {r: 1, g: 1, b: 1, a: 1}
+    heightRange: {x: 1, y: 1}
+    widthRange: {x: 1, y: 1}
+    noiseSpread: 0.5
+    overlap: 0.01
+    feather: 0.05
+    density: 0.5
+    remove: 0
+  maxDetails: 5000
+  detailSpacing: 5
+  waterHeight: 0.5
+  waterGO: {fileID: 0}
+  shoreLineMaterial: {fileID: 0}
   terrain: {fileID: 1151137450}
   terrainData: {fileID: 15600000, guid: 4f96a846311bd3f02b55339a6ec75432, type: 2}
+  terrainLayer: -1
