@@ -3,10 +3,10 @@ using UnityEngine;
 //TODO: change terrain height to length in z axis
 public class ProdecuralLand : MonoBehaviour
 {
-    [Min(2)]
-    public int width = 32;
-    [Min(2)]
-    public int length = 32;
+    [Range(0,7)]
+    public int levelOfDetail = 0;
+
+    const int chunkSize = 129;
     [Min(1)]
     public int height = 64;
 
@@ -30,12 +30,12 @@ public class ProdecuralLand : MonoBehaviour
 
     public void Generate()
     {
-        float[,] heightMap = Noise.GeneratePerlinNoiseMap(width+1, length+1, noiseScale,
+        float[,] heightMap = Noise.GeneratePerlinNoiseMap(chunkSize, chunkSize, noiseScale,
                                                          octaves, persistance, lacunarity,
                                                          landSeed, landOffset);
 
         var terrainRenderer = FindObjectOfType<TerrainRenderer>();
 
-        terrainRenderer.DrawFromHeightMap(heightMap, MeshGenerator.GenerateFromHeightMap(heightMap, heightCurve, height));
+        terrainRenderer.DrawFromHeightMap(heightMap, MeshGenerator.GenerateFromHeightMap(heightMap, heightCurve, levelOfDetail, height));
     }
 }

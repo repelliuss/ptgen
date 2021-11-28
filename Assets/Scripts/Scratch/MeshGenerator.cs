@@ -5,26 +5,30 @@ public static class MeshGenerator
 {
     public static MeshData GenerateFromHeightMap(float[,] heightMap,
                                                  AnimationCurve heightCurve,
+                                                 int levelOfDetail,
                                                  float maxHeight = 1)
     {
         int width = heightMap.GetLength(0);
         int height = heightMap.GetLength(1);
 
-        MeshData meshData = new MeshData(width, height);
+        int meshIncrement = Mathf.RoundToInt(Mathf.Pow(2, levelOfDetail));
+        int verticesPerLine = (width - 1) / meshIncrement + 1;
+
+        MeshData meshData = new MeshData(verticesPerLine, verticesPerLine);
 
         float halfWidth = (width - 1) / 2f;
         float halfHeight = (height - 1) / 2f;
 
         int vertexIndex = 0;
-        for (int y = 0; y < height - 1; ++y)
+        for (int y = 0; y < height - 1; y += meshIncrement)
         {
-            for (int x = 0; x < width - 1; ++x)
+            for (int x = 0; x < width - 1; x += meshIncrement)
             {
                 meshData.vertices[vertexIndex] = new Vector3(x - halfWidth,
                                                              heightCurve.Evaluate(heightMap[x, y]) * maxHeight,
                                                              halfHeight - y);
-                meshData.AddTriangle(vertexIndex, vertexIndex + width + 1, vertexIndex + width);
-                meshData.AddTriangle(vertexIndex + width + 1, vertexIndex, vertexIndex + 1);
+                meshData.AddTriangle(vertexIndex, vertexIndex + verticesPerLine + 1, vertexIndex + verticesPerLine);
+                meshData.AddTriangle(vertexIndex + verticesPerLine + 1, vertexIndex, vertexIndex + 1);
                 meshData.uv[vertexIndex] = new Vector2(x / (float)width, y / (float)height);
                 ++vertexIndex;
             }
@@ -32,21 +36,21 @@ public static class MeshGenerator
             ++vertexIndex;
         }
 
-        vertexIndex = width - 1;
-        for (int y = 0; y < height; ++y)
+        vertexIndex = verticesPerLine - 1;
+        for (int y = 0; y < height; y += meshIncrement)
         {
-            for (int x = width - 1; x < width; ++x)
+            for (int x = width - 1; x < width; x += meshIncrement)
             {
                 meshData.vertices[vertexIndex] = new Vector3(x - halfWidth,
                                                              heightCurve.Evaluate(heightMap[x, y]) * maxHeight,
                                                              halfHeight - y);
                 meshData.uv[vertexIndex] = new Vector2(x / (float)width, y / (float)height);
-                vertexIndex += width;
+                vertexIndex += verticesPerLine;
             }
         }
 
-        vertexIndex = width * (height - 1);
-        for (int x = 0; x < width - 1; ++x)
+        vertexIndex = verticesPerLine * (verticesPerLine - 1);
+        for (int x = 0; x < width - 1; x += meshIncrement)
         {
             meshData.vertices[vertexIndex] = new Vector3(x - halfWidth,
                                                          heightCurve.Evaluate(heightMap[x, (height - 1)]) * maxHeight,
