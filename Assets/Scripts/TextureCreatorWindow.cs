@@ -77,19 +77,19 @@ public class TextureCreatorWindow : EditorWindow {
                     {
                         float u = (float)x / (float)w;
                         float v = (float)y / (float)h;
-                        float noise00 = Noise.fBM((x + perlinOffsetX) * perlinXScale,
+                        float noise00 = Noise.OldFBM((x + perlinOffsetX) * perlinXScale,
                                                   (y + perlinOffsetY) * perlinYScale,
                                             perlinOctaves,
                                             perlinPersistance, perlinLacunarity) * perlinHeightScale;
-                        float noise01 = Noise.fBM((x + perlinOffsetX) * perlinXScale,
+                        float noise01 = Noise.OldFBM((x + perlinOffsetX) * perlinXScale,
                                                   (y + perlinOffsetY + h) * perlinYScale,
                                             perlinOctaves,
                                             perlinPersistance, perlinLacunarity) * perlinHeightScale;
-                        float noise10 = Noise.fBM((x + perlinOffsetX + w) * perlinXScale,
+                        float noise10 = Noise.OldFBM((x + perlinOffsetX + w) * perlinXScale,
                                                   (y + perlinOffsetY) * perlinYScale,
                                             perlinOctaves,
                                             perlinPersistance, perlinLacunarity) * perlinHeightScale;
-                        float noise11 = Noise.fBM((x + perlinOffsetX + w) * perlinXScale,
+                        float noise11 = Noise.OldFBM((x + perlinOffsetX + w) * perlinXScale,
                                                   (y + perlinOffsetY + h) * perlinYScale,
                                             perlinOctaves,
                                             perlinPersistance, perlinLacunarity) * perlinHeightScale;
@@ -108,7 +108,7 @@ public class TextureCreatorWindow : EditorWindow {
                     }
                     else
                     {
-                        pValue = Noise.fBM((x + perlinOffsetX) * perlinXScale,
+                        pValue = Noise.OldFBM((x + perlinOffsetX) * perlinXScale,
                                            (y + perlinOffsetY) * perlinYScale,
                                                 perlinOctaves,
                                                 perlinPersistance, perlinLacunarity) * perlinHeightScale;

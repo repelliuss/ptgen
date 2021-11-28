@@ -749,7 +749,7 @@ public class CustomTerrain : MonoBehaviour
                 {
                     if (p.active)
                     {
-                        heightMap[x, z] += Noise.fBM((x + p.perlinXOffset) * p.perlinXScale, (z + p.perlinZOffset) * p.perlinZScale,
+                        heightMap[x, z] += Noise.OldFBM((x + p.perlinXOffset) * p.perlinXScale, (z + p.perlinZOffset) * p.perlinZScale,
                                                      p.perlinOctaves, p.perlinPersistance, p.perlinLacunarity) * p.perlinHeightScale;
                     }
                 }
@@ -788,7 +788,7 @@ public class CustomTerrain : MonoBehaviour
         {
             for (int z = 0; z < terrainData.heightmapResolution; ++z)
             {
-                heightMap[x, z] += Noise.fBM((x + perlinXOffset) * perlinXScale, (z + perlinZOffset) * perlinZScale,
+                heightMap[x, z] += Noise.OldFBM((x + perlinXOffset) * perlinXScale, (z + perlinZOffset) * perlinZScale,
                                             perlinOctaves, perlinPersistance, perlinLacunarity) * perlinHeightScale;
             }
         }

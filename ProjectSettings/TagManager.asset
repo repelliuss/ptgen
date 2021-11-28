@@ -7,6 +7,8 @@ TagManager:
   - Shore
   - Cloud
   - Terrain
+  - CinemachineTarget
+  - ChunkedTerrain
   layers:
   - Default
   - TransparentFX
