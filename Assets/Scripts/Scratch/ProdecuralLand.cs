@@ -33,9 +33,9 @@ public class ProdecuralLand : MonoBehaviour
         float[,] heightMap = Noise.GeneratePerlinNoiseMap(chunkSize, chunkSize, noiseScale,
                                                          octaves, persistance, lacunarity,
                                                          landSeed, landOffset);
-
         var terrainRenderer = FindObjectOfType<TerrainRenderer>();
+        var meshData = MeshGenerator.GenerateFromHeightMap(heightMap, heightCurve, levelOfDetail, height);
 
-        terrainRenderer.DrawFromHeightMap(heightMap, MeshGenerator.GenerateFromHeightMap(heightMap, heightCurve, levelOfDetail, height));
+        terrainRenderer.DrawFromHeightMap(heightMap, meshData);
     }
 }

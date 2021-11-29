@@ -1,10 +1,18 @@
 using UnityEngine;
 
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshRenderer))]
 public class TerrainRenderer : MonoBehaviour
 {
-    public MeshFilter meshFilter;
-    public MeshRenderer meshRenderer;
+    MeshFilter meshFilter;
+    MeshRenderer meshRenderer;
     public Gradient gradient;
+
+    void Start()
+    {
+        meshFilter = GetComponent<MeshFilter>();
+        meshRenderer = GetComponent<MeshRenderer>();
+    }
 
     public void DrawFromHeightMap(float[,] noiseMap, MeshData meshData)
     {
