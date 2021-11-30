@@ -1,24 +1,24 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ProdecuralLand))]
-public class ProdecuralLandEditor : Editor
+[CustomEditor(typeof(ProceduralLand))]
+public class ProceduralLandEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        ProdecuralLand land = (ProdecuralLand)target;
+        ProceduralLand land = (ProceduralLand)target;
 
         if (DrawDefaultInspector())
         {
             if (land.autoUpdate)
             {
-                land.Generate();
+                land.DrawLand();
             }
         };
 
         if (GUILayout.Button("Generate"))
         {
-            land.Generate();
+            land.DrawLand();
         }
     }
 }
