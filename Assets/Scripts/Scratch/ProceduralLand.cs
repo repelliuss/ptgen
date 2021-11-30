@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 using System.Threading;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 //TODO: change terrain height to length in z axis
 public class ProceduralLand : MonoBehaviour
@@ -33,7 +33,7 @@ public class ProceduralLand : MonoBehaviour
 
     public bool autoUpdate = false;
 
-    ConcurrentQueue<ThreadInfo<LandData>> readyLandData = new ConcurrentQueue<ThreadInfo<LandData>>();
+    Queue<ThreadInfo<LandData>> readyLandData = new Queue<ThreadInfo<LandData>>();
 
     public void DrawLand()
     {
@@ -77,7 +77,9 @@ public class ProceduralLand : MonoBehaviour
 
     void MakeLandData(Action<LandData> callback)
     {
-        readyLandData.Enqueue(new ThreadInfo<LandData>(callback, GenerateLandData()));
+        lock (readyLandData) {
+            readyLandData.Enqueue(new ThreadInfo<LandData>(callback, GenerateLandData()));
+        }
     }
 
     readonly struct ThreadInfo<T>
@@ -94,9 +96,9 @@ public class ProceduralLand : MonoBehaviour
 
     void Update()
     {
-        ThreadInfo<LandData> info;
-        while (readyLandData.TryDequeue(out info))
+        while (readyLandData.Count > 0)
         {
+            ThreadInfo<LandData> info = readyLandData.Dequeue();
             info.callback(info.data);
         }
     }

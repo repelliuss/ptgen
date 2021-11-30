@@ -84,7 +84,7 @@ public class InfiniteTerrain : MonoBehaviour
             land.transform.parent = parent;
             SetActive(false);
 
-            // proceduralLand.RequestLandData(OnLandDataReceived);
+            proceduralLand.RequestLandData(OnLandDataReceived);
         }
 
         public bool TryActivate()
