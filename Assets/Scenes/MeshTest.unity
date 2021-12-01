@@ -261,6 +261,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1953769051}
+  material: {fileID: 2100000, guid: fb2f15776fb6c56d5820d532a3e34ddc, type: 2}
+  lodLevels:
+  - lod: 0
+    visibilityThreshold: 100
+  - lod: 3
+    visibilityThreshold: 200
+  - lod: 5
+    visibilityThreshold: 300
 --- !u!114 &767553122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50fcb2ff03c8eab919d7427497c18399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelOfDetail: 0
+  previewLOD: 0
   height: 64
   noiseScale: 31.1
   octaves: 6
@@ -344,7 +352,7 @@ MonoBehaviour:
     m_NumColorKeys: 8
     m_NumAlphaKeys: 2
   autoUpdate: 1
---- !u!43 &1564921131
+--- !u!43 &985392747
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -526,7 +534,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1621004521
 Transform:
   m_ObjectHideFlags: 0
@@ -589,7 +597,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621004520}
-  m_Mesh: {fileID: 1564921131}
+  m_Mesh: {fileID: 985392747}
 --- !u!114 &1621004524
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,39 +3,55 @@ using System.Collections.Generic;
 
 public class InfiniteTerrain : MonoBehaviour
 {
-    public const float viewDistance = 300;
     public Transform player;
+    //REVIEW: is this a good place
+    public Material material;
+
+    public LODInfo[] lodLevels;
+    static float viewDistance;
 
     public static Vector2 playerPos;
+    Vector2 oldPlayerPos;
+
+    const float playerMoveTresholdBeforeUpdate = 32f;
+    const float sqrPlayerMoveTresholdBeforeUpdate = playerMoveTresholdBeforeUpdate * playerMoveTresholdBeforeUpdate;
 
     int chunkSize;
     int chunksVisible;
 
     Dictionary<Vector2, TerrainChunk> chunks;
-    List<TerrainChunk> lastActiveChunks;
+    static List<TerrainChunk> lastActiveChunks;
 
     //REVIEW: static
     static ProceduralLand proceduralLand;
 
     void Start()
     {
+        viewDistance = lodLevels[lodLevels.Length - 1].visibilityThreshold;
         chunkSize = ProceduralLand.chunkSize - 1;
         chunksVisible = Mathf.RoundToInt(viewDistance / chunkSize);
         chunks = new Dictionary<Vector2, TerrainChunk>();
         lastActiveChunks = new List<TerrainChunk>();
 
         proceduralLand = FindObjectOfType<ProceduralLand>();
+
+        UpdateVisibleChunks();
     }
 
     void Update()
     {
         playerPos = new Vector2(player.position.x, player.position.z);
-        UpdateVisibleChunks();
+
+        if ((oldPlayerPos - playerPos).sqrMagnitude > sqrPlayerMoveTresholdBeforeUpdate)
+        {
+            oldPlayerPos = playerPos;
+            UpdateVisibleChunks();
+        }
     }
 
     void UpdateVisibleChunks()
     {
-        foreach(TerrainChunk chunk in lastActiveChunks)
+        foreach (TerrainChunk chunk in lastActiveChunks)
         {
             chunk.SetActive(false);
         }
@@ -52,49 +68,101 @@ public class InfiniteTerrain : MonoBehaviour
                                                     playerOnChunkCoordY + yOffset);
                 TerrainChunk curChunk;
 
-                if(chunks.TryGetValue(curChunkCoord, out curChunk))
+                if (chunks.TryGetValue(curChunkCoord, out curChunk))
                 {
-                    if(curChunk.TryActivate())
-                    {
-                        lastActiveChunks.Add(curChunk);
-                    }
+                    curChunk.TryActivate();
                 }
-                else {
-                    chunks.Add(curChunkCoord, new TerrainChunk(curChunkCoord, chunkSize, transform));
+                else
+                {
+                    chunks.Add(curChunkCoord, new TerrainChunk(curChunkCoord, chunkSize, lodLevels, transform, material));
                 }
             }
         }
     }
 
-    public readonly struct TerrainChunk
+    public class TerrainChunk
     {
-        readonly Vector2 pos;
-        readonly GameObject land;
-        readonly Bounds bounds;
+        Vector2 pos;
+        GameObject land;
+        Bounds bounds;
 
-        public TerrainChunk(Vector2 coord, int size, Transform parent)
+        MeshRenderer meshRenderer;
+        MeshFilter meshFilter;
+
+        LODInfo[] lodLevels;
+        LODMesh[] lodMeshes;
+
+        LandData landData;
+        bool isLandDataReceived;
+        int curLODIndex = -1;
+
+        public TerrainChunk(Vector2 coord, int size, LODInfo[] lodLevels, Transform parent, Material material)
         {
             pos = coord * size;
             bounds = new Bounds(pos, Vector2.one * size);
             Vector3 pos3 = new Vector3(pos.x, 0, pos.y);
 
-            land = GameObject.CreatePrimitive(PrimitiveType.Plane);
+            land = new GameObject("Terrain Chunk " + coord);
             land.transform.position = pos3;
-            land.transform.localScale = Vector3.one * size / 10f;
             land.transform.parent = parent;
+
+            meshRenderer = land.AddComponent<MeshRenderer>();
+            meshRenderer.material = material;
+            meshFilter = land.AddComponent<MeshFilter>();
+
+            this.lodLevels = lodLevels;
+            lodMeshes = new LODMesh[lodLevels.Length];
+            for (int i = 0; i < lodLevels.Length; ++i)
+            {
+                lodMeshes[i] = new LODMesh(lodLevels[i].lod, TryActivate);
+            }
+
             SetActive(false);
 
-            proceduralLand.RequestLandData(OnLandDataReceived);
+            proceduralLand.RequestLandData(OnLandDataReceived, pos);
         }
 
         public bool TryActivate()
         {
-            float distToPlayer= Mathf.Sqrt(bounds.SqrDistance(playerPos));
-            bool isVisible = distToPlayer <= viewDistance;
+            if (isLandDataReceived)
+            {
+                float distToPlayer = Mathf.Sqrt(bounds.SqrDistance(playerPos));
+                bool isVisible = distToPlayer <= viewDistance;
 
-            SetActive(isVisible);
+                if (isVisible)
+                {
+                    int lodIndex = 0;
+                    int i = 0;
+                    while (i < lodLevels.Length - 1 &&
+                          distToPlayer > lodLevels[i].visibilityThreshold)
+                    {
+                        ++i;
+                        ++lodIndex;
+                    }
 
-            return isVisible;
+                    if (lodIndex != curLODIndex)
+                    {
+                        LODMesh lodMesh = lodMeshes[lodIndex];
+                        if (lodMesh.hasMesh)
+                        {
+                            curLODIndex = lodIndex;
+                            meshFilter.mesh = lodMesh.mesh;
+                        }
+                        else if (!lodMesh.isRequested)
+                        {
+                            lodMesh.RequestMesh(landData);
+                        }
+                    }
+
+                    lastActiveChunks.Add(this);
+                }
+
+                SetActive(isVisible);
+
+                return isVisible;
+            }
+
+            return land.activeSelf;
         }
 
         public void SetActive(bool val)
@@ -104,7 +172,54 @@ public class InfiniteTerrain : MonoBehaviour
 
         void OnLandDataReceived(LandData landData)
         {
-            Debug.Log("Map data received");
+            this.landData = landData;
+            isLandDataReceived = true;
+
+            Texture2D texture = TextureGenerator.GenerateFromLandData(landData);
+            meshRenderer.material.mainTexture = texture;
+
+            TryActivate();
         }
+
+        void OnMeshDataReceived(MeshData meshData)
+        {
+            meshFilter.mesh = meshData.MakeMesh();
+        }
+    }
+
+    class LODMesh
+    {
+        public Mesh mesh;
+        public bool isRequested;
+        public bool hasMesh;
+        int lod;
+
+        System.Func<bool> activationCallback;
+
+        public LODMesh(int lod, System.Func<bool> activationCallback)
+        {
+            this.lod = lod;
+            this.activationCallback = activationCallback;
+        }
+
+        public void RequestMesh(LandData landData)
+        {
+            isRequested = true;
+            proceduralLand.RequestMeshData(OnMeshDataReceived, landData, lod);
+        }
+
+        void OnMeshDataReceived(MeshData meshData)
+        {
+            mesh = meshData.MakeMesh();
+            hasMesh = true;
+            activationCallback();
+        }
+    }
+
+    [System.Serializable]
+    public struct LODInfo
+    {
+        public int lod;
+        public float visibilityThreshold;
     }
 }

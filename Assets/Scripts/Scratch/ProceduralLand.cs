@@ -38,7 +38,7 @@ public class ProceduralLand : MonoBehaviour
 
     public void DrawLand()
     {
-        LandData landData = GenerateLandData();
+        LandData landData = GenerateLandData(Vector2.zero);
         var terrainRenderer = FindObjectOfType<TerrainRenderer>();
 
         terrainRenderer.DrawFromHeightMap(landData, MeshGenerator.GenerateFromHeightMap(landData.heightMap, heightCurve, previewLOD, height));
@@ -62,24 +62,25 @@ public class ProceduralLand : MonoBehaviour
         return colorMap;
     }
 
-    LandData GenerateLandData()
+    LandData GenerateLandData(Vector2 center)
     {
         float[,] heightMap = Noise.GeneratePerlinNoiseMap(chunkSize, chunkSize, noiseScale,
                                                          octaves, persistance, lacunarity,
-                                                         landSeed, landOffset);
+                                                         landSeed, center + landOffset);
 
         return new LandData(heightMap, MakeColorMapFromHeightMap(heightMap));
     }
 
-    public void RequestLandData(Action<LandData> callback)
+    public void RequestLandData(Action<LandData> callback, Vector2 center)
     {
-        new Thread(() => MakeLandData(callback)).Start();
+        new Thread(() => MakeLandData(callback, center)).Start();
     }
 
-    void MakeLandData(Action<LandData> callback)
+    void MakeLandData(Action<LandData> callback, Vector2 center)
     {
+        LandData landData = GenerateLandData(center);
         lock (readyLandData) {
-            readyLandData.Enqueue(new ThreadInfo<LandData>(callback, GenerateLandData()));
+            readyLandData.Enqueue(new ThreadInfo<LandData>(callback, landData));
         }
     }
 

@@ -33,7 +33,7 @@ public static class Noise
         {
             //TODO: experiment with -10000, 10000 range
             octaveOffsets[i].x = prng.Next(-10000, 10000) + offset.x;
-            octaveOffsets[i].y = prng.Next(-10000, 10000) + offset.y;
+            octaveOffsets[i].y = prng.Next(-10000, 10000) - offset.y;
         }
 
         float frequency = 1;
@@ -41,8 +41,8 @@ public static class Noise
 
         for (int i = 0; i < octaves; ++i)
         {
-            height += (PrimaryNoise(x * frequency + octaveOffsets[i].x,
-                                   y * frequency + octaveOffsets[i].y) * 2 - 1) * amplitude;
+            height += (PrimaryNoise((x + octaveOffsets[i].x) * frequency,
+                                   (y + octaveOffsets[i].y) * frequency) * 2 - 1) * amplitude;
             amplitude *= persistance;
             frequency *= lacunarity;
         }
