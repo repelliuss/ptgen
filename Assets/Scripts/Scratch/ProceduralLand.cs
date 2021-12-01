@@ -6,6 +6,8 @@ using System.Collections.Generic;
 //TODO: change terrain height to length in z axis
 public class ProceduralLand : MonoBehaviour
 {
+    public NormalizeMode normalizeMode;
+
     [Range(0, 7)]
     public int previewLOD = 0;
 
@@ -66,7 +68,7 @@ public class ProceduralLand : MonoBehaviour
     {
         float[,] heightMap = Noise.GeneratePerlinNoiseMap(chunkSize, chunkSize, noiseScale,
                                                          octaves, persistance, lacunarity,
-                                                         landSeed, center + landOffset);
+                                                         landSeed, center + landOffset, normalizeMode);
 
         return new LandData(heightMap, MakeColorMapFromHeightMap(heightMap));
     }

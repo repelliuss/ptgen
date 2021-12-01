@@ -265,9 +265,9 @@ MonoBehaviour:
   lodLevels:
   - lod: 0
     visibilityThreshold: 100
-  - lod: 3
+  - lod: 2
     visibilityThreshold: 200
-  - lod: 5
+  - lod: 4
     visibilityThreshold: 300
 --- !u!114 &767553122
 MonoBehaviour:
@@ -281,8 +281,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50fcb2ff03c8eab919d7427497c18399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalizeMode: 1
   previewLOD: 0
-  height: 64
+  height: 13
   noiseScale: 31.1
   octaves: 6
   persistance: 0.5
