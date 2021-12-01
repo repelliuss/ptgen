@@ -19,13 +19,15 @@ public static class MeshGenerator
         float halfWidth = (width - 1) / 2f;
         float halfHeight = (height - 1) / 2f;
 
+        AnimationCurve copyHeightCurve = new AnimationCurve(heightCurve.keys); // For threading
+
         int vertexIndex = 0;
         for (int y = 0; y < height - 1; y += meshIncrement)
         {
             for (int x = 0; x < width - 1; x += meshIncrement)
             {
                 meshData.vertices[vertexIndex] = new Vector3(x - halfWidth,
-                                                             heightCurve.Evaluate(heightMap[x, y]) * maxHeight,
+                                                             copyHeightCurve.Evaluate(heightMap[x, y]) * maxHeight,
                                                              halfHeight - y);
                 meshData.AddTriangle(vertexIndex, vertexIndex + verticesPerLine + 1, vertexIndex + verticesPerLine);
                 meshData.AddTriangle(vertexIndex + verticesPerLine + 1, vertexIndex, vertexIndex + 1);
@@ -54,7 +56,7 @@ public static class MeshGenerator
         {
             meshData.vertices[vertexIndex] = new Vector3(x - halfWidth,
                                                          heightCurve.Evaluate(heightMap[x, (height - 1)]) * maxHeight,
-                                                         halfHeight- (height - 1));
+                                                         halfHeight - (height - 1));
             meshData.uv[vertexIndex] = new Vector2(x / (float)width, (height - 1) / (float)height);
             ++vertexIndex;
         }
@@ -63,7 +65,8 @@ public static class MeshGenerator
     }
 }
 
-public class MeshData {
+public class MeshData
+{
     public Vector3[] vertices;
     public int[] triangles;
     public Vector2[] uv;
@@ -73,15 +76,15 @@ public class MeshData {
     public MeshData(int width, int height)
     {
         vertices = new Vector3[width * height];
-        triangles = new int[(width-1)*(height-1) * 6];
+        triangles = new int[(width - 1) * (height - 1) * 6];
         uv = new Vector2[width * height];
     }
 
     public void AddTriangle(int a, int b, int c)
     {
         triangles[triangleIndex] = a;
-        triangles[triangleIndex+1] = b;
-        triangles[triangleIndex+2] = c;
+        triangles[triangleIndex + 1] = b;
+        triangles[triangleIndex + 2] = c;
         triangleIndex += 3;
     }
 
@@ -96,4 +99,5 @@ public class MeshData {
 
         return mesh;
     }
+
 }
