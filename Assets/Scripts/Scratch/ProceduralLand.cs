@@ -11,7 +11,7 @@ public class ProceduralLand : MonoBehaviour
     [Range(0, 7)]
     public int previewLOD = 0;
 
-    public const int chunkSize = 129;
+    public const int chunkSize = 127;
     [Min(1)]
     public float height = 64;
 
@@ -70,18 +70,19 @@ public class ProceduralLand : MonoBehaviour
 
     LandData GenerateLandData(Vector2 center)
     {
-        float[,] heightMap = Noise.GeneratePerlinNoiseMap(chunkSize, chunkSize, noiseScale,
+        //REVIEW: may require chunkSize + (highest lod increment) instead of chunkSize+2
+        float[,] heightMap = Noise.GeneratePerlinNoiseMap(chunkSize + 2, chunkSize + 2, noiseScale,
                                                          octaves, persistance, lacunarity,
                                                          landSeed, center + landOffset, normalizeMode);
 
-        if(useFalloff)
+        if (useFalloff)
         {
             //REVIEW: put this to noise gen
-            for(int y = 0; y < chunkSize; ++y)
+            for (int y = 0; y < chunkSize; ++y)
             {
-                for(int x = 0; x < chunkSize; ++x)
+                for (int x = 0; x < chunkSize; ++x)
                 {
-                    heightMap[x,y] = Mathf.Clamp01(heightMap[x,y] - falloffMap[x,y]);
+                    heightMap[x, y] = Mathf.Clamp01(heightMap[x, y] - falloffMap[x, y]);
                 }
             }
         }
