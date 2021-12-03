@@ -16,7 +16,7 @@ public class ProceduralLand : MonoBehaviour
     Queue<ThreadInfo<LandData>> readyLandData = new Queue<ThreadInfo<LandData>>();
     Queue<ThreadInfo<MeshData>> readyMeshData = new Queue<ThreadInfo<MeshData>>();
 
-    float[,] falloffMap = FalloffGenerator.GenerateFalloffMap(chunkSize);
+    float[,] falloffMap = FalloffGenerator.GenerateFalloffMap(chunkSize + 2);
 
     public void DrawLand()
     {
@@ -59,9 +59,9 @@ public class ProceduralLand : MonoBehaviour
         if (landPreset.useFalloff)
         {
             //REVIEW: put this to noise gen
-            for (int y = 0; y < chunkSize; ++y)
+            for (int y = 0; y < falloffMap.GetLength(0); ++y)
             {
-                for (int x = 0; x < chunkSize; ++x)
+                for (int x = 0; x < falloffMap.GetLength(1); ++x)
                 {
                     heightMap[x, y] = Mathf.Clamp01(heightMap[x, y] - falloffMap[x, y]);
                 }
