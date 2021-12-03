@@ -13,7 +13,7 @@ public class ProceduralLand : MonoBehaviour
 
     public const int chunkSize = 129;
     [Min(1)]
-    public int height = 64;
+    public float height = 64;
 
     [Min(0.001f)]
     public float noiseScale = 0.3f;
@@ -33,10 +33,14 @@ public class ProceduralLand : MonoBehaviour
 
     public Gradient gradient;
 
+    public bool useFalloff;
+
     public bool autoUpdate = false;
 
     Queue<ThreadInfo<LandData>> readyLandData = new Queue<ThreadInfo<LandData>>();
     Queue<ThreadInfo<MeshData>> readyMeshData = new Queue<ThreadInfo<MeshData>>();
+
+    float[,] falloffMap = FalloffGenerator.GenerateFalloffMap(chunkSize);
 
     public void DrawLand()
     {
@@ -70,6 +74,18 @@ public class ProceduralLand : MonoBehaviour
                                                          octaves, persistance, lacunarity,
                                                          landSeed, center + landOffset, normalizeMode);
 
+        if(useFalloff)
+        {
+            //REVIEW: put this to noise gen
+            for(int y = 0; y < chunkSize; ++y)
+            {
+                for(int x = 0; x < chunkSize; ++x)
+                {
+                    heightMap[x,y] = Mathf.Clamp01(heightMap[x,y] - falloffMap[x,y]);
+                }
+            }
+        }
+
         return new LandData(heightMap, MakeColorMapFromHeightMap(heightMap));
     }
 
@@ -81,7 +97,8 @@ public class ProceduralLand : MonoBehaviour
     void MakeLandData(Action<LandData> callback, Vector2 center)
     {
         LandData landData = GenerateLandData(center);
-        lock (readyLandData) {
+        lock (readyLandData)
+        {
             readyLandData.Enqueue(new ThreadInfo<LandData>(callback, landData));
         }
     }
@@ -95,7 +112,8 @@ public class ProceduralLand : MonoBehaviour
     {
         MeshData meshData = MeshGenerator.GenerateFromHeightMap(landData.heightMap, heightCurve,
                                                                 lod, height);
-        lock (readyMeshData) {
+        lock (readyMeshData)
+        {
             readyMeshData.Enqueue(new ThreadInfo<MeshData>(callback, meshData));
         }
     }
