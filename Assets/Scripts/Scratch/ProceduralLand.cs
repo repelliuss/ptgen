@@ -8,6 +8,10 @@ public class ProceduralLand : MonoBehaviour
 {
     public LandPreset landPreset;
     public NoisePreset noisePreset;
+    public TexturePreset texturePreset;
+
+    public Material material;
+
     public bool autoUpdate = false;
 
     public const int chunkSize = 127;
@@ -34,6 +38,11 @@ public class ProceduralLand : MonoBehaviour
         }
     }
 
+    void OnTextureValueChange()
+    {
+        texturePreset.ApplyToMaterial(material);//
+    }
+
     void OnValidate()
     {
         if (landPreset != null)
@@ -47,6 +56,12 @@ public class ProceduralLand : MonoBehaviour
             noisePreset.OnValueChange -= OnValueChange;
             noisePreset.OnValueChange += OnValueChange;
         }
+
+        if (texturePreset != null)
+        {
+            texturePreset.OnValueChange -= OnTextureValueChange;
+            texturePreset.OnValueChange += OnTextureValueChange;
+        }
     }
 
     LandData GenerateLandData(Vector2 center)
@@ -59,6 +74,7 @@ public class ProceduralLand : MonoBehaviour
         if (landPreset.useFalloff)
         {
             //REVIEW: put this to noise gen
+            //BUG: bugs out updatemeshheights
             for (int y = 0; y < falloffMap.GetLength(0); ++y)
             {
                 for (int x = 0; x < falloffMap.GetLength(1); ++x)
@@ -67,6 +83,8 @@ public class ProceduralLand : MonoBehaviour
                 }
             }
         }
+
+        texturePreset.UpdateMeshHeights(material, landPreset.GetMinHeight(), landPreset.GetMaxHeight());
 
         return new LandData(heightMap);
     }

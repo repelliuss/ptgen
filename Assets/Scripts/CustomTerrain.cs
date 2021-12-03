@@ -851,7 +851,6 @@ public class CustomTerrain : MonoBehaviour
 
     void OnEnable()
     {
-        Debug.Log("Initialising terrain data");
         terrain = GetComponent<Terrain>();
         terrainData = terrain.terrainData;
     }

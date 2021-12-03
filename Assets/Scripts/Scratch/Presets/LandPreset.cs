@@ -13,4 +13,14 @@ public class LandPreset : UpdatablePreset
     public AnimationCurve heightCurve;
 
     public bool useFalloff;
+
+    public float GetMinHeight()
+    {
+        return scale * height * heightCurve.Evaluate(0);
+    }
+
+    public float GetMaxHeight()
+    {
+        return scale * height * heightCurve.Evaluate(1);
+    }
 }

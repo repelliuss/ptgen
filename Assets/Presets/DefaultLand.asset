@@ -48,33 +48,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  gradient:
-    serializedVersion: 2
-    key0: {r: 0, g: 0.35719466, b: 1, a: 1}
-    key1: {r: 0.1372549, g: 0.5873193, b: 1, a: 1}
-    key2: {r: 0.36196154, g: 0.9245283, b: 0.59581286, a: 0}
-    key3: {r: 0.8018868, g: 0.78144175, b: 0.22316661, a: 0}
-    key4: {r: 0.8490566, g: 0.78771937, b: 0.18823424, a: 0}
-    key5: {r: 0.3207547, g: 0.3150286, b: 0.25872195, a: 0}
-    key6: {r: 0.24528301, g: 0.23795538, b: 0.17933428, a: 0}
-    key7: {r: 1, g: 1, b: 1, a: 0}
-    ctime0: 19661
-    ctime1: 26214
-    ctime2: 29491
-    ctime3: 36044
-    ctime4: 39321
-    ctime5: 45875
-    ctime6: 58982
-    ctime7: 65535
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 1
-    m_NumColorKeys: 8
-    m_NumAlphaKeys: 2
   useFalloff: 0
