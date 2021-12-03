@@ -7,7 +7,6 @@ public static class TextureGenerator
         int size = data.heightMap.GetLength(0);
         var texture = new Texture2D(size, size);
 
-        texture.SetPixels(data.colorMap);
         texture.filterMode = FilterMode.Point;
         texture.wrapMode = TextureWrapMode.Clamp;
         texture.Apply();

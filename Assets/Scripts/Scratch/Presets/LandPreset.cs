@@ -12,7 +12,5 @@ public class LandPreset : UpdatablePreset
 
     public AnimationCurve heightCurve;
 
-    public Gradient gradient;
-
     public bool useFalloff;
 }

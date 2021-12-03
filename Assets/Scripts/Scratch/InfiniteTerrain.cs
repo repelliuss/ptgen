@@ -196,9 +196,6 @@ public class InfiniteTerrain : MonoBehaviour
             this.landData = landData;
             isLandDataReceived = true;
 
-            Texture2D texture = TextureGenerator.GenerateFromLandData(landData);
-            meshRenderer.material.mainTexture = texture;
-
             TryActivate();
         }
 

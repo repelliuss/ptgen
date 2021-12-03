@@ -26,24 +26,6 @@ public class ProceduralLand : MonoBehaviour
         terrainRenderer.DrawFromHeightMap(landData, MeshGenerator.GenerateFromHeightMap(landData.heightMap, landPreset.heightCurve, previewLOD, landPreset.height));
     }
 
-    public Color[] MakeColorMapFromHeightMap(float[,] heightMap)
-    {
-        int width = heightMap.GetLength(0);
-        int height = heightMap.GetLength(1);
-
-        Color[] colorMap = new Color[width * height];
-
-        for (int y = 0; y < height; ++y)
-        {
-            for (int x = 0; x < width; ++x)
-            {
-                colorMap[y * width + x] = landPreset.gradient.Evaluate(heightMap[x, y]);
-            }
-        }
-
-        return colorMap;
-    }
-
     void OnValueChange()
     {
         if (!Application.isPlaying)
@@ -86,7 +68,7 @@ public class ProceduralLand : MonoBehaviour
             }
         }
 
-        return new LandData(heightMap, MakeColorMapFromHeightMap(heightMap));
+        return new LandData(heightMap);
     }
 
     public void RequestLandData(Action<LandData> callback, Vector2 center)
@@ -149,11 +131,9 @@ public class ProceduralLand : MonoBehaviour
 public readonly struct LandData
 {
     public readonly float[,] heightMap;
-    public readonly Color[] colorMap;
 
-    public LandData(float[,] heightMap, Color[] colorMap)
+    public LandData(float[,] heightMap)
     {
         this.heightMap = heightMap;
-        this.colorMap = colorMap;
     }
 }
