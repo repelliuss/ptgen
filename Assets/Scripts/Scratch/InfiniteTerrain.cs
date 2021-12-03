@@ -13,8 +13,6 @@ public class InfiniteTerrain : MonoBehaviour
     public static Vector2 playerPos;
     Vector2 oldPlayerPos;
 
-    const float scale = 1f;
-
     const float playerMoveTresholdBeforeUpdate = 32f;
     const float sqrPlayerMoveTresholdBeforeUpdate = playerMoveTresholdBeforeUpdate * playerMoveTresholdBeforeUpdate;
 
@@ -42,7 +40,7 @@ public class InfiniteTerrain : MonoBehaviour
 
     void Update()
     {
-        playerPos = new Vector2(player.position.x, player.position.z) / scale;
+        playerPos = new Vector2(player.position.x, player.position.z) / proceduralLand.landPreset.scale;
 
         if ((oldPlayerPos - playerPos).sqrMagnitude > sqrPlayerMoveTresholdBeforeUpdate)
         {
@@ -108,8 +106,8 @@ public class InfiniteTerrain : MonoBehaviour
             Vector3 pos3 = new Vector3(pos.x, 0, pos.y);
 
             land = new GameObject("Terrain Chunk " + coord);
-            land.transform.position = pos3 * scale;
-            land.transform.localScale = Vector3.one * scale;
+            land.transform.position = pos3 * proceduralLand.landPreset.scale;
+            land.transform.localScale = Vector3.one * proceduralLand.landPreset.scale;
             land.transform.parent = parent;
 
             meshRenderer = land.AddComponent<MeshRenderer>();

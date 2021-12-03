@@ -6,36 +6,12 @@ using System.Collections.Generic;
 //TODO: change terrain height to length in z axis
 public class ProceduralLand : MonoBehaviour
 {
-    public NormalizeMode normalizeMode;
-
-    [Range(0, 7)]
-    public int previewLOD = 0;
+    public LandPreset landPreset;
+    public NoisePreset noisePreset;
+    public bool autoUpdate = false;
 
     public const int chunkSize = 127;
-    [Min(1)]
-    public float height = 64;
-
-    [Min(0.001f)]
-    public float noiseScale = 0.3f;
-
-    [Min(1)]
-    public int octaves;
-
-    [Range(0, 1)]
-    public float persistance;
-    [Min(1)]
-    public float lacunarity;
-
-    public AnimationCurve heightCurve;
-
-    public int landSeed;
-    public Vector2 landOffset;
-
-    public Gradient gradient;
-
-    public bool useFalloff;
-
-    public bool autoUpdate = false;
+    const int previewLOD = 0;
 
     Queue<ThreadInfo<LandData>> readyLandData = new Queue<ThreadInfo<LandData>>();
     Queue<ThreadInfo<MeshData>> readyMeshData = new Queue<ThreadInfo<MeshData>>();
@@ -47,7 +23,7 @@ public class ProceduralLand : MonoBehaviour
         LandData landData = GenerateLandData(Vector2.zero);
         var terrainRenderer = FindObjectOfType<TerrainRenderer>();
 
-        terrainRenderer.DrawFromHeightMap(landData, MeshGenerator.GenerateFromHeightMap(landData.heightMap, heightCurve, previewLOD, height));
+        terrainRenderer.DrawFromHeightMap(landData, MeshGenerator.GenerateFromHeightMap(landData.heightMap, landPreset.heightCurve, previewLOD, landPreset.height));
     }
 
     public Color[] MakeColorMapFromHeightMap(float[,] heightMap)
@@ -61,21 +37,44 @@ public class ProceduralLand : MonoBehaviour
         {
             for (int x = 0; x < width; ++x)
             {
-                colorMap[y * width + x] = gradient.Evaluate(heightMap[x, y]);
+                colorMap[y * width + x] = landPreset.gradient.Evaluate(heightMap[x, y]);
             }
         }
 
         return colorMap;
     }
 
+    void OnValueChange()
+    {
+        if (!Application.isPlaying)
+        {
+            DrawLand();
+        }
+    }
+
+    void OnValidate()
+    {
+        if (landPreset != null)
+        {
+            landPreset.OnValueChange -= OnValueChange;
+            landPreset.OnValueChange += OnValueChange;
+        }
+
+        if (noisePreset != null)
+        {
+            noisePreset.OnValueChange -= OnValueChange;
+            noisePreset.OnValueChange += OnValueChange;
+        }
+    }
+
     LandData GenerateLandData(Vector2 center)
     {
         //REVIEW: may require chunkSize + (highest lod increment) instead of chunkSize+2
-        float[,] heightMap = Noise.GeneratePerlinNoiseMap(chunkSize + 2, chunkSize + 2, noiseScale,
-                                                         octaves, persistance, lacunarity,
-                                                         landSeed, center + landOffset, normalizeMode);
+        float[,] heightMap = Noise.GeneratePerlinNoiseMap(chunkSize + 2, chunkSize + 2, noisePreset.noiseScale,
+                                                         noisePreset.octaves, noisePreset.persistance, noisePreset.lacunarity,
+                                                         noisePreset.landSeed, center + noisePreset.landOffset, noisePreset.normalizeMode);
 
-        if (useFalloff)
+        if (landPreset.useFalloff)
         {
             //REVIEW: put this to noise gen
             for (int y = 0; y < chunkSize; ++y)
@@ -111,8 +110,8 @@ public class ProceduralLand : MonoBehaviour
 
     void MakeMeshData(Action<MeshData> callback, LandData landData, int lod)
     {
-        MeshData meshData = MeshGenerator.GenerateFromHeightMap(landData.heightMap, heightCurve,
-                                                                lod, height);
+        MeshData meshData = MeshGenerator.GenerateFromHeightMap(landData.heightMap, landPreset.heightCurve,
+                                                                lod, landPreset.height);
         lock (readyMeshData)
         {
             readyMeshData.Enqueue(new ThreadInfo<MeshData>(callback, meshData));
