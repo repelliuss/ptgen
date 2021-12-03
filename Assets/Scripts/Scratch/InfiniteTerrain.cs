@@ -90,9 +90,12 @@ public class InfiniteTerrain : MonoBehaviour
 
         MeshRenderer meshRenderer;
         MeshFilter meshFilter;
+        MeshCollider meshCollider;
 
         LODInfo[] lodLevels;
         LODMesh[] lodMeshes;
+
+        LODMesh colliderMesh;
 
         LandData landData;
         bool isLandDataReceived;
@@ -112,12 +115,17 @@ public class InfiniteTerrain : MonoBehaviour
             meshRenderer = land.AddComponent<MeshRenderer>();
             meshRenderer.material = material;
             meshFilter = land.AddComponent<MeshFilter>();
+            meshCollider = land.AddComponent<MeshCollider>();
 
             this.lodLevels = lodLevels;
             lodMeshes = new LODMesh[lodLevels.Length];
             for (int i = 0; i < lodLevels.Length; ++i)
             {
                 lodMeshes[i] = new LODMesh(lodLevels[i].lod, TryActivate);
+                if(lodLevels[i].useCollider)
+                {
+                    colliderMesh = lodMeshes[i];
+                }
             }
 
             SetActive(false);
@@ -154,6 +162,18 @@ public class InfiniteTerrain : MonoBehaviour
                         else if (!lodMesh.isRequested)
                         {
                             lodMesh.RequestMesh(landData);
+                        }
+                    }
+
+                    if (lodIndex == 0)
+                    {
+                        if (colliderMesh.hasMesh)
+                        {
+                            meshCollider.sharedMesh = colliderMesh.mesh;
+                        }
+                        else if (!colliderMesh.isRequested)
+                        {
+                            colliderMesh.RequestMesh(landData);
                         }
                     }
 
@@ -224,5 +244,6 @@ public class InfiniteTerrain : MonoBehaviour
     {
         public int lod;
         public float visibilityThreshold;
+        public bool useCollider;
     }
 }
