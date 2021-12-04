@@ -22,8 +22,16 @@ public class ProceduralLand : MonoBehaviour
 
     float[,] falloffMap = FalloffGenerator.GenerateFalloffMap(chunkSize + 2);
 
+    void Awake()
+    {
+        texturePreset.ApplyToMaterial(material);
+        texturePreset.UpdateMeshHeights(material, landPreset.GetMinHeight(), landPreset.GetMaxHeight());
+    }
+
     public void DrawLand()
     {
+        texturePreset.UpdateMeshHeights(material, landPreset.GetMinHeight(), landPreset.GetMaxHeight());
+
         LandData landData = GenerateLandData(Vector2.zero);
         var terrainRenderer = FindObjectOfType<TerrainRenderer>();
 
@@ -40,7 +48,7 @@ public class ProceduralLand : MonoBehaviour
 
     void OnTextureValueChange()
     {
-        texturePreset.ApplyToMaterial(material);//
+        texturePreset.ApplyToMaterial(material);
     }
 
     void OnValidate()
@@ -83,8 +91,6 @@ public class ProceduralLand : MonoBehaviour
                 }
             }
         }
-
-        texturePreset.UpdateMeshHeights(material, landPreset.GetMinHeight(), landPreset.GetMaxHeight());
 
         return new LandData(heightMap);
     }

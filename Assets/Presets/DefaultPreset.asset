@@ -19,4 +19,4 @@ MonoBehaviour:
   lacunarity: 2
   landSeed: 0
   landOffset: {x: 0, y: 0}
-  normalizeMode: 0
+  normalizeMode: 1

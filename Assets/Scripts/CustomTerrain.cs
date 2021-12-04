@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [ExecuteInEditMode]
 public class CustomTerrain : MonoBehaviour
 {
@@ -912,3 +913,4 @@ public class CustomTerrain : MonoBehaviour
         return -1;
     }
 }
+#endif
