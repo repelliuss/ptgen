@@ -178,6 +178,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
+      propertyPath: movementSettings.JumpForce
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
+      propertyPath: movementSettings.ForwardSpeed
+      value: 16
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11400006, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
@@ -328,16 +336,13 @@ MonoBehaviour:
   lodLevels:
   - lod: 0
     visibilityThreshold: 64
-    useCollider: 0
   - lod: 1
     visibilityThreshold: 100
-    useCollider: 1
   - lod: 2
     visibilityThreshold: 200
-    useCollider: 0
   - lod: 4
     visibilityThreshold: 400
-    useCollider: 0
+  colliderLODIndex: 0
 --- !u!114 &767553122
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,11 +10,14 @@ public class InfiniteTerrain : MonoBehaviour
     public LODInfo[] lodLevels;
     static float viewDistance;
 
+    public int colliderLODIndex;
+
     public static Vector2 playerPos;
     Vector2 oldPlayerPos;
 
     const float playerMoveTresholdBeforeUpdate = 32f;
     const float sqrPlayerMoveTresholdBeforeUpdate = playerMoveTresholdBeforeUpdate * playerMoveTresholdBeforeUpdate;
+    const float colliderTreshold = 5;
 
     int chunkSize;
     int chunksVisible;
@@ -41,6 +44,14 @@ public class InfiniteTerrain : MonoBehaviour
     void Update()
     {
         playerPos = new Vector2(player.position.x, player.position.z) / proceduralLand.landPreset.scale;
+
+        if (oldPlayerPos != playerPos)
+        {
+            foreach (TerrainChunk chunk in lastActiveChunks)
+            {
+                chunk.UpdateCollisionMesh();
+            }
+        }
 
         if ((oldPlayerPos - playerPos).sqrMagnitude > sqrPlayerMoveTresholdBeforeUpdate)
         {
@@ -74,7 +85,7 @@ public class InfiniteTerrain : MonoBehaviour
                 }
                 else
                 {
-                    chunks.Add(curChunkCoord, new TerrainChunk(curChunkCoord, chunkSize, lodLevels, transform, material));
+                    chunks.Add(curChunkCoord, new TerrainChunk(curChunkCoord, chunkSize, lodLevels, transform, material, colliderLODIndex));
                 }
             }
         }
@@ -93,14 +104,17 @@ public class InfiniteTerrain : MonoBehaviour
         LODInfo[] lodLevels;
         LODMesh[] lodMeshes;
 
-        LODMesh colliderMesh;
+        int colliderLODIndex;
 
         LandData landData;
         bool isLandDataReceived;
         int curLODIndex = -1;
 
-        public TerrainChunk(Vector2 coord, int size, LODInfo[] lodLevels, Transform parent, Material material)
+        bool hasCollider = false;
+
+        public TerrainChunk(Vector2 coord, int size, LODInfo[] lodLevels, Transform parent, Material material, int colliderLODIndex)
         {
+            this.colliderLODIndex = colliderLODIndex;
             pos = coord * size;
             bounds = new Bounds(pos, Vector2.one * size);
             Vector3 pos3 = new Vector3(pos.x, 0, pos.y);
@@ -119,10 +133,17 @@ public class InfiniteTerrain : MonoBehaviour
             lodMeshes = new LODMesh[lodLevels.Length];
             for (int i = 0; i < lodLevels.Length; ++i)
             {
-                lodMeshes[i] = new LODMesh(lodLevels[i].lod, TryActivate);
-                if(lodLevels[i].useCollider)
+                if (i == colliderLODIndex)
                 {
-                    colliderMesh = lodMeshes[i];
+                    lodMeshes[i] = new LODMesh(lodLevels[i].lod, () =>
+                                               {
+                                                   UpdateCollisionMesh();
+                                                   return TryActivate();
+                                               });
+                }
+                else
+                {
+                    lodMeshes[i] = new LODMesh(lodLevels[i].lod, TryActivate);
                 }
             }
 
@@ -163,18 +184,6 @@ public class InfiniteTerrain : MonoBehaviour
                         }
                     }
 
-                    if (lodIndex == 0)
-                    {
-                        if (colliderMesh.hasMesh)
-                        {
-                            meshCollider.sharedMesh = colliderMesh.mesh;
-                        }
-                        else if (!colliderMesh.isRequested)
-                        {
-                            colliderMesh.RequestMesh(landData);
-                        }
-                    }
-
                     lastActiveChunks.Add(this);
                 }
 
@@ -184,6 +193,31 @@ public class InfiniteTerrain : MonoBehaviour
             }
 
             return land.activeSelf;
+        }
+
+        public void UpdateCollisionMesh()
+        {
+            if (!hasCollider)
+            {
+                float distToPlayer = bounds.SqrDistance(playerPos);
+
+                if (distToPlayer < lodLevels[colliderLODIndex].GetSqrVisibleTreshold())
+                {
+                    if (!lodMeshes[colliderLODIndex].isRequested)
+                    {
+                        lodMeshes[colliderLODIndex].RequestMesh(landData);
+                    }
+                }
+
+                if (distToPlayer < colliderTreshold * colliderTreshold)
+                {
+                    if (lodMeshes[colliderLODIndex].hasMesh)
+                    {
+                        meshCollider.sharedMesh = lodMeshes[colliderLODIndex].mesh;
+                        hasCollider = true;
+                    }
+                }
+            }
         }
 
         public void SetActive(bool val)
@@ -239,6 +273,10 @@ public class InfiniteTerrain : MonoBehaviour
     {
         public int lod;
         public float visibilityThreshold;
-        public bool useCollider;
+
+        public float GetSqrVisibleTreshold()
+        {
+            return visibilityThreshold * visibilityThreshold;
+        }
     }
 }
