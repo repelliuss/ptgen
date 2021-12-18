@@ -1,13 +1,13 @@
 using UnityEngine;
 using System;
 
-public class UpdatablePreset : ScriptableObject
+public class UpdatableScriptableObject : ScriptableObject
 {
-    public event Action OnValueChange;
+    public event Action onChange;
     public bool autoUpdate;
 
-    public void UpdatePreset()
+    public void Update()
     {
-        OnValueChange?.Invoke();
+        onChange?.Invoke();
     }
 }

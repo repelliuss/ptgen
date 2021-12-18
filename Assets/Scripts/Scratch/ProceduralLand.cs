@@ -55,20 +55,20 @@ public class ProceduralLand : MonoBehaviour
     {
         if (landPreset != null)
         {
-            landPreset.OnValueChange -= OnValueChange;
-            landPreset.OnValueChange += OnValueChange;
+            landPreset.onChange -= OnValueChange;
+            landPreset.onChange += OnValueChange;
         }
 
         if (noisePreset != null)
         {
-            noisePreset.OnValueChange -= OnValueChange;
-            noisePreset.OnValueChange += OnValueChange;
+            noisePreset.onChange -= OnValueChange;
+            noisePreset.onChange += OnValueChange;
         }
 
         if (texturePreset != null)
         {
-            texturePreset.OnValueChange -= OnTextureValueChange;
-            texturePreset.OnValueChange += OnTextureValueChange;
+            texturePreset.onChange -= OnTextureValueChange;
+            texturePreset.onChange += OnTextureValueChange;
         }
     }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class LandPreset : UpdatablePreset
+public class LandPreset : UpdatableScriptableObject
 {
     [Min(1)]
     public float height = 64;

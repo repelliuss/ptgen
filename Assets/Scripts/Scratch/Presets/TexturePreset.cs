@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Linq;
 
 [CreateAssetMenu()]
-public class TexturePreset : UpdatablePreset
+public class TexturePreset : UpdatableScriptableObject
 {
     const int textureSize = 512;
     const TextureFormat textureFormat = TextureFormat.RGB565;

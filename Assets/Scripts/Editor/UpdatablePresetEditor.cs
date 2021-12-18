@@ -1,24 +1,24 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(UpdatablePreset), true)]
-public class UpdatablePresetEditor : Editor {
+[CustomEditor(typeof(UpdatableScriptableObject), true)]
+public class UpdatableScriptableObjectEditor : Editor {
 
     public override void OnInspectorGUI()
     {
-        UpdatablePreset data = (UpdatablePreset) target;
+        UpdatableScriptableObject data = (UpdatableScriptableObject) target;
 
         if(DrawDefaultInspector())
         {
             if(data.autoUpdate)
             {
-                data.UpdatePreset();
+                data.Update();
             }
         }
 
         if(GUILayout.Button("Update"))
         {
-            data.UpdatePreset();
+            data.Update();
         }
     }
 }

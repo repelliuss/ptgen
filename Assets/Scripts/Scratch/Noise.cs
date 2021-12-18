@@ -9,7 +9,6 @@ public static class Noise
                             int octaves, float persistance, float lacunarity)
     {
         float height = 0;
-
         float frequency = 1;
         float amplitude = 1;
 

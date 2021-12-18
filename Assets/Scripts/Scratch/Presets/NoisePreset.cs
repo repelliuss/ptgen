@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class NoisePreset : UpdatablePreset
+public class NoisePreset : UpdatableScriptableObject
 {
     [Min(0.001f)]
     public float noiseScale = 0.3f;
