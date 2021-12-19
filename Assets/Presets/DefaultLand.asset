@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: DefaultLand
   m_EditorClassIdentifier: 
   autoUpdate: 0
-  height: 64.3
-  scale: 3
+  height: 64
+  scale: 1
   heightCurve:
     serializedVersion: 2
     m_Curve:

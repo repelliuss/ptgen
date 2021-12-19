@@ -1,4 +1,4 @@
-Shader "Custom/Foo"
+Shader "Custom/ProceduralTerrain"
 {
     Properties
     {
@@ -23,7 +23,7 @@ Shader "Custom/Foo"
         float tintStrengths[maxLayerCount];
         float startHeights[maxLayerCount];
         float blendStrengths[maxLayerCount];
-        float textureScales[maxLayerCount];
+        float scales[maxLayerCount];
 
         UNITY_DECLARE_TEX2DARRAY(textures);
 
@@ -45,9 +45,14 @@ Shader "Custom/Foo"
         {
             float3 scaledPos = pos / scale;
 
-            float3 x = UNITY_SAMPLE_TEX2DARRAY(textures, float3(scaledPos.y, scaledPos.z, index)) * blend.x;
-            float3 y = UNITY_SAMPLE_TEX2DARRAY(textures, float3(scaledPos.x, scaledPos.z, index)) * blend.y;
-            float3 z = UNITY_SAMPLE_TEX2DARRAY(textures, float3(scaledPos.x, scaledPos.y, index)) * blend.z;
+            float3 x = UNITY_SAMPLE_TEX2DARRAY(textures,
+                float3(scaledPos.y, scaledPos.z, index)) * blend.x;
+
+            float3 y = UNITY_SAMPLE_TEX2DARRAY(textures,
+                float3(scaledPos.x, scaledPos.z, index)) * blend.y;
+
+            float3 z = UNITY_SAMPLE_TEX2DARRAY(textures,
+                float3(scaledPos.x, scaledPos.y, index)) * blend.z;
 
             return x + y + z;
         }
@@ -67,9 +72,11 @@ Shader "Custom/Foo"
 
             for(int i = 0; i < layerCount; ++i)
             {
-                float strength = inverseLerp(-blendStrengths[i]/2, blendStrengths[i]/2 + epsilon, normalizedHeight - startHeights[i]);
+                float strength = inverseLerp(-blendStrengths[i]/2,
+                    blendStrengths[i]/2 + epsilon, normalizedHeight - startHeights[i]);
                 float3 tint = tints[i] * tintStrengths[i];
-                float3 tex = triplanar(IN.worldPos, textureScales[i], blendAxes, i) * (1 - tintStrengths[i]);
+                float3 tex = triplanar(IN.worldPos, scales[i], blendAxes, i);
+                tex *= (1 - tintStrengths[i]);
 
                 o.Albedo = o.Albedo * (1 - strength) + (tint+tex) * strength;
             }

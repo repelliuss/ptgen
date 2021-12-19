@@ -25,12 +25,12 @@ public class ProceduralLand : MonoBehaviour
     void Awake()
     {
         texturePreset.ApplyToMaterial(material);
-        texturePreset.UpdateMeshHeights(material, landPreset.GetMinHeight(), landPreset.GetMaxHeight());
+        texturePreset.SetHeights(material, landPreset.GetMinHeight(), landPreset.GetMaxHeight());
     }
 
     public void DrawLand()
     {
-        texturePreset.UpdateMeshHeights(material, landPreset.GetMinHeight(), landPreset.GetMaxHeight());
+        texturePreset.SetHeights(material, landPreset.GetMinHeight(), landPreset.GetMaxHeight());
 
         LandData landData = GenerateLandData(Vector2.zero);
         var terrainRenderer = FindObjectOfType<TerrainRenderer>();

@@ -15,14 +15,14 @@ MonoBehaviour:
   autoUpdate: 1
   layers:
   - texture: {fileID: 2800000, guid: dd49ed99f55924d13bacefd240626bc5, type: 3}
-    textureScale: 28.17
-    tint: {r: 1, g: 0.74650204, b: 0, a: 0}
-    tintStrength: 0.125
-    startHeight: 0
-    blendStrength: 0.653
-  - texture: {fileID: 2800000, guid: 3a7915e2b99cd4d5a9f01b075f2ad6e9, type: 3}
-    textureScale: 28.17
-    tint: {r: 0.5188679, g: 0.50576663, b: 0.46747062, a: 0}
+    scale: 20
+    tint: {r: 0, g: 0, b: 0, a: 0}
     tintStrength: 0
-    startHeight: 0.514
-    blendStrength: 0.38
+    startHeight: 0
+    blendStrength: 0.01
+  - texture: {fileID: 2800000, guid: 89d7186bb29164a87905f17c084e4206, type: 3}
+    scale: 20
+    tint: {r: 0, g: 0, b: 0, a: 0}
+    tintStrength: 0
+    startHeight: 0.1
+    blendStrength: 0.5

@@ -6,6 +6,7 @@ public static class MeshGenerator
     {
         return x == 0 || y == 0 || x == outerSize - 1 || y == outerSize - 1;
     }
+
     public static MeshData GenerateFromHeightMap(float[,] heightMap,
                                                  AnimationCurve heightCurve,
                                                  int levelOfDetail,
@@ -200,5 +201,4 @@ public class MeshData
 
         return mesh;
     }
-
 }

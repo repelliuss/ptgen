@@ -4,7 +4,10 @@ using UnityEngine;
 public class GradientHeightMapParams : UpdatableScriptableObject
 {
     //TODO: remove const and make a multiple choice values
-    public const int size = 127;
+    public const int size = 129;
+
+    [Min(1)]
+    public float uniformScale = 1;
 
     public Vector2 landOffset;
     public float heightScale;
@@ -36,7 +39,7 @@ public class GradientHeightMapParams : UpdatableScriptableObject
         return octaveOffsets;
     }
 
-    public float CalculateMaxHeight()
+    public float CalculateMaxFBMValue()
     {
         float maxHeight = 1;
         float amplitude = persistance;
@@ -48,5 +51,17 @@ public class GradientHeightMapParams : UpdatableScriptableObject
         }
 
         return maxHeight;
+    }
+
+    public float GetMinHeight()
+    {
+        return uniformScale * heightScale *
+            heightCurve.Evaluate(0);
+    }
+
+    public float GetMaxHeight()
+    {
+        return uniformScale * heightScale *
+            heightCurve.Evaluate(1);
     }
 }

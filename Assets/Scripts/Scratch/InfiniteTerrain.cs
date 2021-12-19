@@ -232,16 +232,11 @@ public class InfiniteTerrain : MonoBehaviour
 
             TryActivate();
         }
-
-        void OnMeshDataReceived(MeshData meshData)
-        {
-            meshFilter.mesh = meshData.MakeMesh();
-        }
     }
 
     class LODMesh
     {
-        public Mesh mesh;
+        public Mesh mesh = null;
         public bool isRequested;
         public bool hasMesh;
         int lod;

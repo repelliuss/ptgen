@@ -8,7 +8,7 @@ public class TexturePreset : UpdatableScriptableObject
     const TextureFormat textureFormat = TextureFormat.RGB565;
     const int maxLayerCount = 10;
 
-    public Layer[] layers = new Layer[maxLayerCount];
+    public TextureLayer[] layers = new TextureLayer[maxLayerCount];
 
     float lastMinHeight;
     float lastMaxHeight;
@@ -17,18 +17,19 @@ public class TexturePreset : UpdatableScriptableObject
     {
         material.SetInt("layerCount", layers.Length);
         material.SetColorArray("tints", layers.Select(x => x.tint).ToArray());
+        material.SetFloatArray("tintStrengths", layers.Select(x => x.tintStrength).ToArray());
         material.SetFloatArray("startHeights", layers.Select(x => x.startHeight).ToArray());
         material.SetFloatArray("blendStrengths", layers.Select(x => x.blendStrength).ToArray());
-        material.SetFloatArray("tintStrengths", layers.Select(x => x.tintStrength).ToArray());
-        material.SetFloatArray("textureScales", layers.Select(x => x.textureScale).ToArray());
+        material.SetFloatArray("scales", layers.Select(x => x.scale).ToArray());
 
-        var textures = PrepareLayerTextures(layers.Select(x => x.texture).ToArray());
+        Texture2DArray textures =
+            PrepareLayerTextures(layers.Select(x => x.texture).ToArray());
         material.SetTexture("textures", textures);
 
-        UpdateMeshHeights(material, lastMinHeight, lastMaxHeight);
+        SetHeights(material, lastMinHeight, lastMaxHeight);
     }
 
-    public void UpdateMeshHeights(Material material, float minHeight, float maxHeight)
+    public void SetHeights(Material material, float minHeight, float maxHeight)
     {
         lastMinHeight = minHeight;
         lastMaxHeight = maxHeight;
@@ -39,7 +40,10 @@ public class TexturePreset : UpdatableScriptableObject
 
     Texture2DArray PrepareLayerTextures(Texture2D[] textures)
     {
-        var textureArray = new Texture2DArray(textureSize, textureSize, textures.Length, textureFormat, true);
+        Texture2DArray textureArray = new Texture2DArray(textureSize,
+                                                         textureSize,
+                                                         textures.Length,
+                                                         textureFormat, true);
 
         for (int i = 0; i < textures.Length; ++i) {
             textureArray.SetPixels(textures[i].GetPixels(), i);
@@ -51,10 +55,10 @@ public class TexturePreset : UpdatableScriptableObject
     }
 
     [System.Serializable]
-    public class Layer
+    public class TextureLayer
     {
         public Texture2D texture;
-        public float textureScale;
+        public float scale;
         public Color tint;
         [Range(0,1)]
         public float tintStrength;
