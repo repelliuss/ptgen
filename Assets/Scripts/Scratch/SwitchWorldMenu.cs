@@ -15,12 +15,18 @@ public class SwitchWorldMenu : MonoBehaviour
     public Dropdown dropdown;
     public Text dropdownLabel;
     public InputField seedInput;
+    public Button switchCamera;
+    public Text switchCameraText;
     public Button exit;
+
+    Player player;
 
     bool changeCursor;
 
     void Start()
     {
+        player = FindObjectOfType<Player>();
+
         dropdownLabel.text = SceneManager.GetActiveScene().name;
 
         int sceneCount = SceneManager.sceneCountInBuildSettings;
@@ -36,6 +42,8 @@ public class SwitchWorldMenu : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        switchCameraText.text = "SWITCH TO " + player.GetCameraName();
     }
 
     void Update()
@@ -80,6 +88,12 @@ public class SwitchWorldMenu : MonoBehaviour
 
             changeCursor = false;
         }
+    }
+
+    public void SwitchCamera()
+    {
+        player.SwitchCamera();
+        switchCameraText.text = "SWITCH TO " + player.GetCameraName();
     }
 
     public void ExitGame()

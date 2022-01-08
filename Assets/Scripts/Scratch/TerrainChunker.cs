@@ -7,7 +7,7 @@ using System.Collections.Generic;
 class TerrainChunker : MonoBehaviour
 {
     public Transform player;
-    public Transform freePlayer;
+
     public int colliderFromLOD;
     public LOD[] lods;
 
@@ -80,7 +80,6 @@ class TerrainChunker : MonoBehaviour
         if (!updateTreshold.Contains(playerPos))
         {
             UpdateChunks();
-
         }
 
         foreach (Chunk chunk in activeChunks)
