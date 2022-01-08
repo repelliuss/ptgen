@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 using System.Collections.Generic;
 
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 class TerrainChunker : MonoBehaviour
 {
     public Transform player;
+    public Transform freePlayer;
     public int colliderFromLOD;
     public LOD[] lods;
 
@@ -25,6 +27,20 @@ class TerrainChunker : MonoBehaviour
     int chunkSize;
     int chunkPerLine;
 
+    public float forestChunkDistance;
+    public float waterChunkDistance;
+    public float foliageChunkDistance;
+    public float quadFoliageChunkDistance;
+
+    static float forestChunkDistSqr;
+    static float waterChunkDistSqr;
+    static float foliageChunkDistSqr;
+    static float quadFoliageChunkDistSqr;
+
+    static Vector3 waterChunkScale;
+
+    static Camera mainCam;
+
     void Start()
     {
         terrain = FindObjectOfType<ProceduralTerrain>();
@@ -40,22 +56,47 @@ class TerrainChunker : MonoBehaviour
 
         material = terrain.material;
 
+        forestChunkDistSqr = forestChunkDistance *
+            forestChunkDistance;
+        waterChunkDistSqr = waterChunkDistance *
+            waterChunkDistance;
+        waterChunkScale = new Vector3(chunkSize / terrain.waterParam.waterTileSize.x * 2,
+                                      1,
+                                      chunkSize / terrain.waterParam.waterTileSize.y * 2);
+        foliageChunkDistSqr = foliageChunkDistance *
+            foliageChunkDistance;
+        quadFoliageChunkDistSqr = quadFoliageChunkDistance *
+            quadFoliageChunkDistance;
+
+        mainCam = Camera.main;
+
         UpdateChunks();
     }
 
     void Update()
     {
         playerPos = new Vector2(player.position.x, player.position.z) /
-            terrain.param.uniformScale;
+            terrain.heightMapParam.uniformScale;
         if (!updateTreshold.Contains(playerPos))
         {
             UpdateChunks();
-            updateTreshold = CalculateUpdateBounds();
+
         }
 
         foreach (Chunk chunk in activeChunks)
         {
-            chunk.TryBakeCollider();
+            chunk.TryBakeData();
+        }
+    }
+
+    void LateUpdate()
+    {
+        if(terrain.rotateQuadFoliage)
+        {
+            foreach (Chunk chunk in activeChunks)
+            {
+                chunk.RotateQuads();
+            }
         }
     }
 
@@ -67,7 +108,7 @@ class TerrainChunker : MonoBehaviour
 
     void ClearActiveChunks()
     {
-        foreach(Chunk chunk in activeChunks)
+        foreach (Chunk chunk in activeChunks)
         {
             chunk.SetActive(false);
         }
@@ -104,6 +145,24 @@ class TerrainChunker : MonoBehaviour
         }
     }
 
+    class Instantiator : MonoBehaviour
+    {
+        public void OnForestReceived(Forest forest)
+        {
+            StartCoroutine(forest.PlantDeferred());
+        }
+
+        public void OnQuadFoliageReceived(Foliage quadFoliage)
+        {
+            StartCoroutine(quadFoliage.PlantDeferred());
+        }
+
+        public void OnFoliageReceived(Foliage foliage)
+        {
+            StartCoroutine(foliage.PlantDeferred());
+        }
+    }
+
     class Chunk
     {
         GameObject chunk;
@@ -116,6 +175,17 @@ class TerrainChunker : MonoBehaviour
         float[,] heightMap;
         Bounds chunkBounds;
 
+        GameObject forest;
+        GameObject water;
+        GameObject foliage;
+        GameObject quadFoliage;
+        Shoreline shoreLine;
+
+        bool shoreLineRequested;
+
+        static GameObject instantiatorObject;
+        static Instantiator instantiator;
+
         public Chunk(Vector2 position, int chunkSize,
                      Material material,
                      TerrainChunker parent, LOD[] lods,
@@ -123,8 +193,8 @@ class TerrainChunker : MonoBehaviour
         {
             chunk = new GameObject("Chunk " + position);
             chunk.transform.position = new Vector3(position.x, 0, position.y)
-                * terrain.param.uniformScale;
-            chunk.transform.localScale = Vector3.one * terrain.param.uniformScale;
+                * terrain.heightMapParam.uniformScale;
+            chunk.transform.localScale = Vector3.one * terrain.heightMapParam.uniformScale;
             chunk.transform.parent = parent.transform;
 
             chunkBounds = new Bounds(position, Vector2.one * chunkSize);
@@ -135,12 +205,13 @@ class TerrainChunker : MonoBehaviour
 
             this.lods = lods;
             lodMeshes = new LODMesh[lods.Length];
-            for(int i = 0; i < lods.Length; ++i)
+            for (int i = 0; i < lods.Length; ++i)
             {
-                if(i == colliderFromLOD)
+                if (i == colliderFromLOD)
                 {
                     lodMeshes[i] = new LODMesh(lods[i],
-                                               () => {
+                                               () =>
+                                               {
                                                    TryBakeCollider();
                                                    UpdatePresence();
                                                });
@@ -154,39 +225,62 @@ class TerrainChunker : MonoBehaviour
 
             SetActive(false);
 
+            if(instantiatorObject == null)
+            {
+                instantiatorObject = new GameObject();
+                instantiatorObject.transform.name = "Instantiator";
+                instantiator = instantiatorObject.AddComponent<Instantiator>();
+            }
+
             terrain.RequestHeightMap(OnHeightMapReceived, position);
+        }
+
+        public bool IsActive()
+        {
+            return chunk.activeSelf;
+        }
+
+        public void Destroy()
+        {
+            GameObject.Destroy(chunk);
+        }
+
+        public Vector2 GetCoord()
+        {
+            return new Vector2(chunk.transform.position.x, chunk.transform.position.z);
         }
 
         public void UpdatePresence()
         {
-            if(heightMap != null)
+            if (heightMap != null)
             {
                 float distToPlayer = Mathf.Sqrt(chunkBounds.SqrDistance(playerPos));
                 bool isVisible = distToPlayer <= maxViewDistance;
 
-                if(isVisible)
+                if (isVisible)
                 {
                     int lodIndex = 0;
                     int i = 0;
 
-                    while(i < lods.Length - 1 &&
+                    while (i < lods.Length - 1 &&
                           distToPlayer > lods[i].viewDistance)
                     {
                         ++i;
                         ++lodIndex;
                     }
 
-                    if(lodIndex != prevLODIndex)
+                    if (lodIndex != prevLODIndex)
                     {
-                       LODMesh mesh = lodMeshes[lodIndex];
-                       if(!mesh.IsEmpty())
-                       {
-                           prevLODIndex = lodIndex;
-                           meshFilter.mesh = mesh.GetMesh();
-                       }
-                       else {
-                           mesh.RequestMesh(heightMap);
-                       }
+                        LODMesh mesh = lodMeshes[lodIndex];
+                        if (!mesh.IsEmpty())
+                        {
+                            prevLODIndex = lodIndex;
+                            meshFilter.mesh = mesh.GetMesh();
+                        }
+                        else
+                        {
+                            mesh.RequestMesh(heightMap);
+                        }
                     }
 
                     colliderMesh.RequestMesh(heightMap);
@@ -198,15 +292,172 @@ class TerrainChunker : MonoBehaviour
             }
         }
 
+        public void TryBakeData()
+        {
+            TryBakeCollider();
+            TryBakeTrees();
+            TryAddFoliage();
+            TryAddQuadFoliage();
+            TryAddWater();
+            TryAddShoreLine();
+        }
+
+        public void TryAddWater()
+        {
+            Assert.IsNotNull(terrain.waterParam.gobject, "No terrain water assigned");
+
+            float distToPlayer = chunkBounds.SqrDistance(playerPos);
+            if (distToPlayer < waterChunkDistSqr)
+            {
+                if (water == null)
+                {
+                    water = GameObject.Instantiate(terrain.waterParam.gobject);
+                    water.transform.parent = chunk.transform;
+                    Vector3 waterPos = new Vector3(chunk.transform.position.x,
+                                                   terrain.waterParam.waterLevel,
+                                                   chunk.transform.position.z);
+                    water.transform.position = waterPos;
+                    water.transform.localScale = waterChunkScale;
+                }
+                else
+                {
+                    water.SetActive(true);
+                }
+            }
+            else if (water != null)
+            {
+                GameObject.Destroy(water);
+            }
+        }
+
+        public void TryAddShoreLine()
+        {
+            float distToPlayer = chunkBounds.SqrDistance(playerPos);
+            if (distToPlayer < waterChunkDistSqr)
+            {
+                if (!shoreLineRequested)
+                {
+                    shoreLineRequested = true;
+                    terrain.RequestShoreLine(OnShoreLineReceived,
+                                             heightMap,
+                                             new Vector2(chunk.transform.position.x,
+                                                         chunk.transform.position.z),
+                                             chunk.transform);
+                }
+                else if (shoreLine != null)
+                {
+                    shoreLine.SetActive(true);
+                }
+            }
+            else if (shoreLine != null)
+            {
+                shoreLineRequested = false;
+                shoreLine.Destroy();
+            }
+        }
+
+        public void TryAddQuadFoliage()
+        {
+            float distToPlayer = chunkBounds.SqrDistance(playerPos);
+            if (distToPlayer < quadFoliageChunkDistSqr)
+            {
+                if (quadFoliage == null)
+                {
+                    Vector2 position = new Vector2(chunk.transform.position.x,
+                                                   chunk.transform.position.z);
+                    quadFoliage = new GameObject();
+                    quadFoliage.transform.parent = chunk.transform;
+                    quadFoliage.transform.name = "Quad Foliage";
+
+                    terrain.RequestQuadFoliage(instantiator.OnQuadFoliageReceived,
+                                               heightMap,
+                                               position,
+                                               quadFoliage.transform,
+                                               UnityEngine.Random.Range(0, 9999999));
+                }
+                else
+                {
+                    quadFoliage.SetActive(true);
+                }
+            }
+            else
+            {
+                if (quadFoliage != null) quadFoliage.SetActive(false);
+            }
+        }
+
+        public void TryAddFoliage()
+        {
+            float distToPlayer = chunkBounds.SqrDistance(playerPos);
+            if (distToPlayer < foliageChunkDistSqr)
+            {
+                if (foliage == null)
+                {
+                    Vector2 position = new Vector2(chunk.transform.position.x,
+                                                   chunk.transform.position.z);
+                    foliage = new GameObject();
+                    foliage.transform.parent = chunk.transform;
+                    foliage.transform.name = "Foliage";
+
+                    terrain.RequestFoliage(instantiator.OnFoliageReceived,
+                                           heightMap,
+                                           position,
+                                           foliage.transform,
+                                           UnityEngine.Random.Range(0, 9999999));
+                }
+                else
+                {
+                    foliage.SetActive(true);
+                }
+            }
+            else
+            {
+                if (foliage != null) foliage.SetActive(false);
+            }
+        }
+
+        public void TryBakeTrees()
+        {
+            float distToPlayer = chunkBounds.SqrDistance(playerPos);
+            if (distToPlayer < forestChunkDistSqr)
+            {
+                if (forest == null)
+                {
+                    Vector2 position = new Vector2(chunk.transform.position.x,
+                                                   chunk.transform.position.z);
+
+                    forest = new GameObject();
+                    forest.transform.parent = chunk.transform;
+                    forest.transform.name = "Forest";
+
+                    terrain.RequestTrees(instantiator.OnForestReceived,
+                                         heightMap,
+                                         position,
+                                         forest.transform,
+                                         UnityEngine.Random.Range(0, 9999999));
+                }
+                else {
+                    forest.SetActive(true);
+                }
+            }
+            else {
+                if(forest != null) forest.SetActive(false);
+            }
+        }
+
         public void TryBakeCollider()
         {
             float distToPlayer = chunkBounds.SqrDistance(playerPos);
-            if(distToPlayer < colliderDistanceTreshold * colliderDistanceTreshold)
+            if (distToPlayer < colliderDistanceTreshold * colliderDistanceTreshold)
             {
-                if(!colliderMesh.IsEmpty())
+                if (!colliderMesh.IsEmpty())
                 {
                     meshCollider.sharedMesh = colliderMesh.GetMesh();
                 }
+            }
+            else
+            {
+                meshCollider.sharedMesh = null;
             }
         }
 
@@ -215,10 +466,46 @@ class TerrainChunker : MonoBehaviour
             chunk.SetActive(activity);
         }
 
+        public void RotateQuads()
+        {
+            if(quadFoliage != null && quadFoliage.activeSelf)
+            {
+                foreach(Transform t in quadFoliage.transform)
+                {
+                    t.rotation = Quaternion.Euler(0f,
+                                                  mainCam.transform.rotation.eulerAngles.y,
+                                                  0f);
+                }
+            }
+        }
+
         void OnHeightMapReceived(float[,] heightMap)
         {
             this.heightMap = heightMap;
             UpdatePresence();
+        }
+
+        void OnForestReceived(Forest forest)
+        {
+            forest.Plant();
+        }
+
+        void OnQuadFoliageReceived(Foliage quadFoliage)
+        {
+            quadFoliage.Plant();
+        }
+
+        void OnFoliageReceived(Foliage foliage)
+        {
+            foliage.Plant();
+        }
+
+        void OnShoreLineReceived(Shoreline shoreLine)
+        {
+            this.shoreLine = shoreLine;
+            shoreLine.PlantQuads();
+            shoreLine.PlantShoreLine();
+            shoreLine.DestroyQuads();
         }
     }
 
@@ -239,7 +526,7 @@ class TerrainChunker : MonoBehaviour
 
         public Mesh GetMesh()
         {
-            if(IsEmpty())
+            if (IsEmpty())
             {
                 return null;
             }
@@ -249,7 +536,8 @@ class TerrainChunker : MonoBehaviour
 
         public void RequestMesh(float[,] heightMap)
         {
-            if(!isRequested) {
+            if (!isRequested)
+            {
                 isRequested = true;
                 terrain.RequestSquareMesh(OnMeshReceived, heightMap, lod.level);
             }

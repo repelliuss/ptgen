@@ -6,7 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MeshTest.unity
-    guid: b54efdb349335ac9f9334278452e7332
+    path: Assets/Scenes/Refactor.unity
+    guid: 98a9c930c1110a3a1919e099d0431ff9
+  - enabled: 1
+    path: Assets/Scenes/TextureScene.unity
+    guid: 61f2d80da65c8f69fa6bc733ef3a9428
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}

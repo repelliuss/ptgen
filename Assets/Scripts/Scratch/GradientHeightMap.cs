@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
+//TODO: rename file
 public class GradientHeightMapMaker
 {
     GradientHeightMapParams param;
@@ -31,7 +32,7 @@ public class GradientHeightMapMaker
             for (int x = 0; x < size; ++x)
             {
                 float height = FBM(x, y, center);
-                height = Normalize(height);
+                height = Normalize(height, maxHeight);
                 height = heightCurve.Evaluate(height);
                 height *= param.heightScale;
                 heightMap[x, y] = height;
@@ -90,14 +91,14 @@ public class GradientHeightMapMaker
                 + octaveOffsets[octaveIndex].y
                 + param.landOffset.y
                 + center.y)
-            / param.noiseScale
+            / (param.noiseScale)
             * frequency;
     }
 
     /// unfold value and normalize with a constant
     /// (value + 1) / 2f * maxValue * constant
     /// here constant is 2f
-    float Normalize(float height)
+    public static float Normalize(float height, float maxHeight)
     {
         // REVIEW: check
         // return (height + maxHeight) / (maxHeight * 2f);

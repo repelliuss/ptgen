@@ -55,13 +55,15 @@ public class GradientHeightMapParams : UpdatableScriptableObject
 
     public float GetMinHeight()
     {
+	AnimationCurve threadCurve = new AnimationCurve(heightCurve.keys);
         return uniformScale * heightScale *
-            heightCurve.Evaluate(0);
+	    threadCurve.Evaluate(0);
     }
 
     public float GetMaxHeight()
     {
+	AnimationCurve threadCurve = new AnimationCurve(heightCurve.keys);
         return uniformScale * heightScale *
-            heightCurve.Evaluate(1);
+	    threadCurve.Evaluate(1);
     }
 }

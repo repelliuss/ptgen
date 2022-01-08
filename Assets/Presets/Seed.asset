@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 984eb4040f031eda085f92402cf99cb9, type: 3}
-  m_Name: DefaultGradientHeightMapParam
+  m_Name: Seed
   m_EditorClassIdentifier: 
   autoUpdate: 1
   uniformScale: 1
@@ -41,7 +41,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   octaveCount: 6
-  noiseScale: 71.89
+  noiseScale: 75.25
   persistance: 0.5
   lacunarity: 2
   seed: 0

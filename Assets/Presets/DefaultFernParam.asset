@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d973abed306a17456a5be83789b11fc6, type: 3}
+  m_Name: DefaultFernParam
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  gobject: {fileID: 8865179257978726342, guid: 8df60505fa1e0568ea5889953e716669, type: 3}
+  minHeight: 0
+  maxHeight: 5
+  minSlope: 0
+  maxSlope: 0.1567
+  widthScale: {x: 1, y: 5}
+  heightScale: {x: 1, y: 5}
+  baseWidthScale: 150
+  baseHeightScale: 150
+  minScatter: 0
+  maxScatter: 0
+  xSpacing: 1
+  ySpacing: 1
+  color1: {r: 1, g: 1, b: 1, a: 1}
+  color2: {r: 1, g: 1, b: 1, a: 1}
+  color2Bias: 0
+  minRotation: 0
+  maxRotation: 360
+  overlap: 0.23
+  feather: -4.87
+  density: 0.5
+  maxCount: 100
