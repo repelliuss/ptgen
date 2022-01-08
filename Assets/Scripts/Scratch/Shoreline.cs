@@ -129,7 +129,7 @@ public class Shoreline
 
     public void SetActive(bool activity)
     {
-        shoreLine.SetActive(activity);
+        if(shoreLine != null) shoreLine.SetActive(activity);
     }
 
     void AddNeighbour(List<Vector2Int> neighbours, int x, int y)
