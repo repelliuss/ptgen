@@ -24,6 +24,7 @@ public class GradientHeightMapMaker
 
         Assert.IsTrue(param.noiseScale > 0.0f, "scale factor is not positive");
 
+        //TODO: remove these
         float max = float.MinValue;
         float min = float.MaxValue;
 
