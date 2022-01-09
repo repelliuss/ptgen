@@ -1,4 +1,15 @@
 using UnityEngine;
+using System.Collections.Generic;
+
+public class HeightMapNeighboursData
+{
+    public List<Vector2Int>[,] neighbours;
+
+    public HeightMapNeighboursData(int width, int height)
+    {
+        neighbours = new List<Vector2Int>[width,height];
+    }
+}
 
 //TODO: rename file
 public class GradientHeightMapMaker
@@ -7,6 +18,8 @@ public class GradientHeightMapMaker
     float maxHeight;
     Vector2[][] octaveOffsets;
     AnimationCurve heightCurve;
+    public HeightMapNeighboursData ndata;
+    public float[,] data;
 
     public GradientHeightMapMaker(GradientHeightMapParams param)
     {
@@ -14,9 +27,11 @@ public class GradientHeightMapMaker
         this.maxHeight = param.CalculateMaxFBMValue();
         this.octaveOffsets = param.CalculateOctaveOffsets();
         this.heightCurve = new AnimationCurve(param.heightCurve.keys); // For threading
+        this.ndata = new HeightMapNeighboursData(GradientHeightMapParams.size,
+                                                 GradientHeightMapParams.size);
     }
 
-    public float[,] Make(Vector2 center)
+    public void Make(Vector2 center)
     {
         int size = GradientHeightMapParams.size;
         float[,] heightMap = new float[size, size];
@@ -34,20 +49,26 @@ public class GradientHeightMapMaker
                 height = heightCurve.Evaluate(height);
                 height *= param.heightScale;
                 heightMap[x, y] = height;
-                if(max < height)
-                max = height;
-                if(min > height)
-                min = height;
+
+                ndata.neighbours[x,y] = Math.GenerateNeighbours(x, y, size, size);
+
+                if(max < height) max = height;
+                if(min > height) min = height;
             }
         }
 
+        Erosion erosion = new Erosion(heightMap, ndata);
         if(param.thermalParam != null)
         {
-            Erosion erosion = new Erosion(heightMap, param.thermalParam);
-            erosion.Thermal();
+            erosion.Thermal(param.thermalParam);
         }
 
-        return heightMap;
+        if(param.windParam != null)
+        {
+            erosion.Wind(param.windParam);
+        }
+
+        data = heightMap;
     }
 
     float FBM(float x, float y, Vector2 center)

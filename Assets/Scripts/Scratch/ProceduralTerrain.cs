@@ -25,6 +25,7 @@ public class ProceduralTerrain : MonoBehaviour
     public static int worldSeed = 0;
 
     static float[,] previewHeightMap;
+    static HeightMapNeighboursData previewNeighboursData;
     static GameObject previewObject;
     static GameObject previewWater;
 
@@ -34,7 +35,7 @@ public class ProceduralTerrain : MonoBehaviour
     Queue<Action> shorelineLine = new Queue<Action>();
     Queue<Action> foliageLine = new Queue<Action>();
 
-    public void RequestHeightMap(Action<float[,]> callback, Vector2 center)
+    public void RequestHeightMap(Action<GradientHeightMapMaker> callback, Vector2 center)
     {
         new Thread(() => MakeHeightMap(callback, center)).Start();
     }
@@ -67,18 +68,23 @@ public class ProceduralTerrain : MonoBehaviour
     }
 
     public void RequestShoreLine(Action<Shoreline> callback, float[,] heightMap,
+                                 HeightMapNeighboursData neighbourData,
                                  Vector2 center, Transform parent)
     {
         GameObject shoreLine = new GameObject();
         shoreLine.transform.name = "Shore Line";
         shoreLine.transform.parent = parent;
-        new Thread(() => MakeShoreLine(callback, heightMap, center, parent,
+        new Thread(() => MakeShoreLine(callback, heightMap, neighbourData,
+                                       center, parent,
                                        shoreLine)).Start();
     }
 
     public void MakePreviewTerrain()
     {
-        previewHeightMap = (new GradientHeightMapMaker(heightMapParam)).Make(Vector2.zero);
+        GradientHeightMapMaker map = new GradientHeightMapMaker(heightMapParam);
+        map.Make(Vector2.zero);
+        previewHeightMap = map.data;
+        previewNeighboursData = map.ndata;
         Mesh mesh = SquareMesh.FromHeightMap(previewHeightMap, lod).Generate();
 
         if (previewObject == null)
@@ -186,7 +192,8 @@ public class ProceduralTerrain : MonoBehaviour
         GameObject shoreObject = new GameObject();
         shoreObject.transform.name = "Shore Line";
         shoreObject.transform.parent = previewObject.transform;
-        Shoreline shoreLine = new Shoreline(previewHeightMap, waterParam.waterLevel,
+        Shoreline shoreLine = new Shoreline(previewHeightMap, previewNeighboursData,
+                                            waterParam.waterLevel,
                                             waterParam.material,
                                             Vector2.zero, previewObject.transform,
                                             shoreObject);
@@ -252,6 +259,12 @@ public class ProceduralTerrain : MonoBehaviour
                 heightMapParam.thermalParam.onChange -= MakePreviewTerrain;
                 heightMapParam.thermalParam.onChange += MakePreviewTerrain;
             }
+
+            if(heightMapParam.windParam)
+            {
+                heightMapParam.windParam.onChange -= MakePreviewTerrain;
+                heightMapParam.windParam.onChange += MakePreviewTerrain;
+            }
         }
 
         if (texturePreset)
@@ -292,13 +305,14 @@ public class ProceduralTerrain : MonoBehaviour
         texturePreset.ApplyToMaterial(material);
     }
 
-    void MakeHeightMap(Action<float[,]> callback, Vector2 center)
+    void MakeHeightMap(Action<GradientHeightMapMaker> callback, Vector2 center)
     {
-        float[,] heightMap = (new GradientHeightMapMaker(heightMapParam)).Make(center);
+        GradientHeightMapMaker map = new GradientHeightMapMaker(heightMapParam);
+        map.Make(center);
 
         lock (heightMapLine)
         {
-            heightMapLine.Enqueue(() => callback(heightMap));
+            heightMapLine.Enqueue(() => callback(map));
         }
     }
 
@@ -327,9 +341,11 @@ public class ProceduralTerrain : MonoBehaviour
     }
 
     void MakeShoreLine(Action<Shoreline> callback, float[,] heightMap,
+                       HeightMapNeighboursData neighbourData,
                        Vector2 center, Transform parent, GameObject shoreLine)
     {
-        Shoreline sh = new Shoreline(heightMap, waterParam.waterLevel,
+        Shoreline sh = new Shoreline(heightMap, neighbourData,
+                                     waterParam.waterLevel,
                                      waterParam.material, center, parent,
                                      shoreLine);
         sh.BakeQuads();

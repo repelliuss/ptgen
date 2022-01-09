@@ -1,29 +1,27 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class Erosion
 {
     float[,] heightMap;
-    ThermalParams thermalParam;
+    HeightMapNeighboursData neighbourData;
+    int width;
+    int height;
 
-    public Erosion(float[,] heightMap, ThermalParams thermalParam)
+    public Erosion(float[,] heightMap, HeightMapNeighboursData neighbourData)
     {
         this.heightMap = heightMap;
-        this.thermalParam = thermalParam;
+        this.neighbourData = neighbourData;
+        this.width = heightMap.GetLength(0);
+        this.height = heightMap.GetLength(1);
     }
 
-    public void Thermal()
+    public void Thermal(ErosionParams thermalParam)
     {
-        int width = heightMap.GetLength(0);
-        int height = heightMap.GetLength(1);
-
         for (int y = 3 ; y < height - 3; ++y)
         {
             for(int x = 3; x < width - 3; ++x)
             {
-                List<Vector2Int> neighbours = Math.GenerateNeighbours(x, y,
-                                                                      width, height);
-                foreach(Vector2Int neighbour in neighbours)
+                foreach(Vector2Int neighbour in neighbourData.neighbours[x, y])
                 {
                     float curHeight = heightMap[x, y];
                     float neighbourHeight = heightMap[neighbour.x, neighbour.y];
@@ -32,6 +30,27 @@ public class Erosion
                         heightMap[x, y] -= curHeight * thermalParam.power;
                         heightMap[neighbour.x, neighbour.y] += curHeight * thermalParam.power;
                     }
+                }
+            }
+        }
+    }
+
+    public void Wind(ErosionParams windParam)
+    {
+        for (int y = 10; y < height - 25; y += 10)
+        {
+            for (int x = 10; x < width - 10; ++x)
+            {
+                int noise = (int)(NNoise.PrimaryNoise(x * 0.06f, y * 0.06f)
+                                  * 20 * windParam.strength);
+                int nx = x;
+                int digy = y + noise;
+                int ny = y + 5 + noise;
+
+                if(ny < height)
+                {
+                    heightMap[x, digy] -= windParam.power;
+                    heightMap[nx, ny] += windParam.power;
                 }
             }
         }

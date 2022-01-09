@@ -47,6 +47,10 @@ class TerrainChunker : MonoBehaviour
         activeChunks = new List<Chunk>();
         chunks = new Dictionary<Vector2, Chunk>();
 
+        player.position = new Vector3(0,
+                                      terrain.heightMapParam.heightScale + 10f,
+                                      0);
+
         maxViewDistance = lods[lods.Length - 1].viewDistance;
         chunkSize = GradientHeightMapParams.size - 3;
         chunkPerLine = Mathf.RoundToInt(maxViewDistance / chunkSize);
@@ -172,6 +176,7 @@ class TerrainChunker : MonoBehaviour
         LODMesh[] lodMeshes;
         LODMesh colliderMesh;
         float[,] heightMap;
+        HeightMapNeighboursData neighbourData;
         Bounds chunkBounds;
 
         GameObject forest;
@@ -339,6 +344,7 @@ class TerrainChunker : MonoBehaviour
                     shoreLineRequested = true;
                     terrain.RequestShoreLine(OnShoreLineReceived,
                                              heightMap,
+                                             neighbourData,
                                              new Vector2(chunk.transform.position.x,
                                                          chunk.transform.position.z),
                                              chunk.transform);
@@ -478,9 +484,10 @@ class TerrainChunker : MonoBehaviour
             }
         }
 
-        void OnHeightMapReceived(float[,] heightMap)
+        void OnHeightMapReceived(GradientHeightMapMaker map)
         {
-            this.heightMap = heightMap;
+            this.heightMap = map.data;
+            this.neighbourData = map.ndata;
             UpdatePresence();
         }
 

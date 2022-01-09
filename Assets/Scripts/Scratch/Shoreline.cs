@@ -6,6 +6,7 @@ public class Shoreline
 {
 
     float[,] heightMap;
+    HeightMapNeighboursData neighbourData;
     int width;
     int height;
     float halfWidth;
@@ -21,12 +22,14 @@ public class Shoreline
 
     List<MeshFilter> quadFilters;
 
-    public Shoreline(float[,] heightMap, float waterLevel,
+    public Shoreline(float[,] heightMap, HeightMapNeighboursData ndata,
+                     float waterLevel,
                      Material shoreLineMaterial,
                      Vector2 center, Transform parent,
                      GameObject shoreLine)
     {
         this.heightMap = heightMap;
+        this.neighbourData = ndata;
         this.width = heightMap.GetLength(0);
         this.height = heightMap.GetLength(1);
         this.halfWidth = width / 2f;
@@ -72,10 +75,7 @@ public class Shoreline
             {
                 if (heightMap[x, y] < waterLevel)
                 {
-                    List<Vector2Int> neighbours = Math.GenerateNeighbours(x, y,
-                                                                          width, height);
-
-                    foreach (Vector2Int n in neighbours)
+                    foreach (Vector2Int n in neighbourData.neighbours[x, y])
                     {
                         if (heightMap[n.x, n.y] > waterLevel)
                         {
