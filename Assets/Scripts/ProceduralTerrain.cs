@@ -265,6 +265,12 @@ public class ProceduralTerrain : MonoBehaviour
                 heightMapParam.windParam.onChange -= MakePreviewTerrain;
                 heightMapParam.windParam.onChange += MakePreviewTerrain;
             }
+
+            if(heightMapParam.falloffParam)
+            {
+                heightMapParam.falloffParam.onChange -= MakePreviewTerrain;
+                heightMapParam.falloffParam.onChange += MakePreviewTerrain;
+            }
         }
 
         if (texturePreset)

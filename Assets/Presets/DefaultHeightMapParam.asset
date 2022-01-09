@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 984eb4040f031eda085f92402cf99cb9, type: 3}
-  m_Name: DefaultGradientHeightMapParam
+  m_Name: DefaultHeightMapParam
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  uniformScale: 5
+  uniformScale: 1
   landOffset: {x: 0, y: 0}
   heightScale: 64
   heightCurve:
@@ -62,5 +62,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 43c92e7697afef824955900e834b18d4, type: 2}
   - {fileID: 11400000, guid: 135c103cfb723ae4aa8aba0c6f46044a, type: 2}
   thermalParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}
-  windParam: {fileID: 0}
+  windParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}
   falloffParam: {fileID: 0}

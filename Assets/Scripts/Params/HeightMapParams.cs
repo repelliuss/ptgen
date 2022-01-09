@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class HeightMapParams : UpdatableScriptableObject
 {
-    //TODO: remove const and make a multiple choice values
     public const int size = 129;
 
     [Min(1)]
@@ -38,7 +37,6 @@ public class HeightMapParams : UpdatableScriptableObject
 
         for (int i = 0; i < noises[index].octaveCount; ++i)
         {
-            //TODO: experiment with -10000, 10000 range
             octaveOffsets[i].x = prng.Next(-10000, 10000);
             octaveOffsets[i].y = prng.Next(-10000, 10000);
 

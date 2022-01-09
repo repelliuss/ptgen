@@ -11,7 +11,6 @@ public class HeightMapNeighboursData
     }
 }
 
-//TODO: rename file
 public class HeightMapMaker
 {
     HeightMapParams param;
@@ -36,10 +35,6 @@ public class HeightMapMaker
         int size = HeightMapParams.size;
         float[,] heightMap = new float[size, size];
 
-        //TODO: remove these
-        float max = float.MinValue;
-        float min = float.MaxValue;
-
         for (int y = 0; y < size; ++y)
         {
             for (int x = 0; x < size; ++x)
@@ -51,9 +46,6 @@ public class HeightMapMaker
                 heightMap[x, y] = height;
 
                 ndata.neighbours[x,y] = Math.GenerateNeighbours(x, y, size, size);
-
-                if(max < height) max = height;
-                if(min > height) min = height;
             }
         }
 
