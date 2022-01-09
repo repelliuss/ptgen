@@ -55,4 +55,25 @@ public class Erosion
             }
         }
     }
+
+    public void GenerateFalloffMap(FalloffParams param)
+    {
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                float x = (i/(float)width) * 2 - 1;
+                float y = (j/(float)height) * 2 - 1;
+
+                float val = Mathf.Max(Mathf.Abs(x), Mathf.Abs(y));
+                heightMap[i, j] =  heightMap[i, j] - Evaluate(val, param) * param.scale;
+            }
+        }
+    }
+
+    float Evaluate(float val, FalloffParams param)
+    {
+        float a = param.a;
+        float b = param.b;
+
+        return Mathf.Pow(val, a) / (Mathf.Pow(val, a) + Mathf.Pow(b - b * val, a));
+    }
 }

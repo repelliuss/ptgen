@@ -67,6 +67,10 @@ public class GradientHeightMapMaker
         {
             erosion.Wind(param.windParam);
         }
+        if(param.falloffParam)
+        {
+            erosion.GenerateFalloffMap(param.falloffParam);
+        }
 
         data = heightMap;
     }

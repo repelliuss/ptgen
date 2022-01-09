@@ -16,6 +16,7 @@ public class GradientHeightMapParams : UpdatableScriptableObject
 
     public ErosionParams thermalParam;
     public ErosionParams windParam;
+    public FalloffParams falloffParam;
 
     public Vector2[][] CalculateOctaveOffsets()
     {

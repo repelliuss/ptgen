@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: DefaultGradientHeightMapParam
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  uniformScale: 1
-  landOffset: {x: 1878730, y: 1878730}
+  uniformScale: 5
+  landOffset: {x: 0, y: 0}
   heightScale: 64
   heightCurve:
     serializedVersion: 2
@@ -63,3 +63,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 135c103cfb723ae4aa8aba0c6f46044a, type: 2}
   thermalParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}
   windParam: {fileID: 0}
+  falloffParam: {fileID: 0}

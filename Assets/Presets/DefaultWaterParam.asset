@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5725da84408833f2bbb9e006294ec4c, type: 3}
   m_Name: DefaultWaterParam
   m_EditorClassIdentifier: 
-  autoUpdate: 0
+  autoUpdate: 1
   gobject: {fileID: 100006, guid: 843740dbe549a4a6ba9556d1b80001f5, type: 3}
-  waterLevel: 2.49
+  waterLevel: 6
   waterTileSize: {x: 100, y: 200}
   material: {fileID: 2100000, guid: 8db920f5ef1f953d49a5d73dac77a8a6, type: 2}
