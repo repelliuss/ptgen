@@ -29,6 +29,24 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
+      time: 0.3375521
+      value: 0.028285375
+      inSlope: -0.02536974
+      outSlope: -0.02536974
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.28106806
+    - serializedVersion: 3
+      time: 0.71864104
+      value: 0.31115696
+      inSlope: 1.4531066
+      outSlope: 1.4531066
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 1
       inSlope: 2
@@ -40,8 +58,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  octaveCount: 6
-  noiseScale: 71.89
-  persistance: 0.5
-  lacunarity: 2
-  seed: 0
+  noises:
+  - {fileID: 11400000, guid: 43c92e7697afef824955900e834b18d4, type: 2}
+  - {fileID: 11400000, guid: 135c103cfb723ae4aa8aba0c6f46044a, type: 2}

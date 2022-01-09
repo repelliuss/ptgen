@@ -12,28 +12,33 @@ public class GradientHeightMapParams : UpdatableScriptableObject
     public Vector2 landOffset;
     public float heightScale;
     public AnimationCurve heightCurve;
+    public NoiseParams[] noises;
 
-    [Min(1)]
-    public int octaveCount;
-
-    public float noiseScale;
-    public float persistance;
-    public float lacunarity;
-    public int seed;
-
-    public Vector2[] CalculateOctaveOffsets()
+    public Vector2[][] CalculateOctaveOffsets()
     {
-        Vector2[] octaveOffsets = new Vector2[octaveCount];
-        System.Random prng = new System.Random(seed);
+        Vector2[][] offsets = new Vector2[noises.Length][];
+
+        for(int i = 0; i < noises.Length; ++i)
+        {
+            offsets[i] = CalculateOctaveOffsets(i);
+        }
+
+        return offsets;
+    }
+
+    public Vector2[] CalculateOctaveOffsets(int index)
+    {
+        Vector2[] octaveOffsets = new Vector2[noises[index].octaveCount];
+        System.Random prng = new System.Random(noises[index].seed);
         float amplitude = 1;
 
-        for (int i = 0; i < octaveCount; ++i)
+        for (int i = 0; i < noises[index].octaveCount; ++i)
         {
             //TODO: experiment with -10000, 10000 range
             octaveOffsets[i].x = prng.Next(-10000, 10000);
             octaveOffsets[i].y = prng.Next(-10000, 10000);
 
-            amplitude *= persistance;
+            amplitude *= noises[index].persistance;
         }
 
         return octaveOffsets;
@@ -41,29 +46,36 @@ public class GradientHeightMapParams : UpdatableScriptableObject
 
     public float CalculateMaxFBMValue()
     {
-        float maxHeight = 1;
-        float amplitude = persistance;
+        float maxHeight = 0;
 
-        for(int i = 1; i < octaveCount; ++i)
+        for(int i = 0; i < noises.Length; ++i)
         {
-            maxHeight += amplitude;
-            amplitude *= persistance;
+            float height = 1;
+            float amplitude = noises[i].persistance;
+
+            for(int j = 1; j < noises[i].octaveCount; ++j)
+            {
+                height += amplitude;
+                amplitude *= noises[i].persistance;
+            }
+
+            maxHeight += height;
         }
 
-        return maxHeight;
+        return maxHeight / noises.Length;
     }
 
     public float GetMinHeight()
     {
-	AnimationCurve threadCurve = new AnimationCurve(heightCurve.keys);
+        AnimationCurve threadCurve = new AnimationCurve(heightCurve.keys);
         return uniformScale * heightScale *
-	    threadCurve.Evaluate(0);
+            threadCurve.Evaluate(0);
     }
 
     public float GetMaxHeight()
     {
-	AnimationCurve threadCurve = new AnimationCurve(heightCurve.keys);
+        AnimationCurve threadCurve = new AnimationCurve(heightCurve.keys);
         return uniformScale * heightScale *
-	    threadCurve.Evaluate(1);
+            threadCurve.Evaluate(1);
     }
 }

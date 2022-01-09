@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 
 //TODO: rename file
 public class GradientHeightMapMaker
 {
     GradientHeightMapParams param;
     float maxHeight;
-    Vector2[] octaveOffsets;
+    Vector2[][] octaveOffsets;
     AnimationCurve heightCurve;
 
     public GradientHeightMapMaker(GradientHeightMapParams param)
@@ -21,8 +20,6 @@ public class GradientHeightMapMaker
     {
         int size = GradientHeightMapParams.size;
         float[,] heightMap = new float[size, size];
-
-        Assert.IsTrue(param.noiseScale > 0.0f, "scale factor is not positive");
 
         //TODO: remove these
         float max = float.MinValue;
@@ -49,50 +46,59 @@ public class GradientHeightMapMaker
 
     float FBM(float x, float y, Vector2 center)
     {
-        float height = 0;
-        float frequency = 1;
-        float amplitude = 1;
-
         float halfSize = GradientHeightMapParams.size / 2;
+        NoiseParams[] noises = param.noises;
+        float height = 0;
 
-        for (int i = 0; i < param.octaveCount; ++i)
+        for (int j = 0; j < noises.Length; ++j)
         {
-            float effectiveX = CalculateEffectiveX(x, halfSize, i, frequency, center);
-            float effectiveY = CalculateEffectiveY(y, halfSize, i, frequency, center);
+            float curHeight = 0;
+            float frequency = 1;
+            float amplitude = 1;
 
-            float noise = NNoise.PrimaryNoise(effectiveX, effectiveY);
-            noise = (noise * 2 - 1) * amplitude;
+            for (int i = 0; i < noises[j].octaveCount; ++i)
+            {
+                float effectiveX = CalculateEffectiveX(x, halfSize, j, i, frequency, center);
+                float effectiveY = CalculateEffectiveY(y, halfSize, j, i, frequency, center);
 
-            height += noise;
+                float noise = NNoise.PrimaryNoise(effectiveX, effectiveY);
+                noise = (noise * 2 - 1) * amplitude;
 
-            amplitude *= param.persistance;
-            frequency *= param.lacunarity;
+                curHeight += noise;
+
+                amplitude *= noises[j].persistance;
+                frequency *= noises[j].lacunarity;
+            }
+
+            height += curHeight;
         }
 
-        return height;
+        return height / noises.Length;
     }
 
-    float CalculateEffectiveX(float x, float halfSize, int octaveIndex,
+    float CalculateEffectiveX(float x, float halfSize,
+                              int noiseIndex, int octaveIndex,
                               float frequency, Vector2 center)
     {
         return (x
                 - halfSize
-                + octaveOffsets[octaveIndex].x
+                + octaveOffsets[noiseIndex][octaveIndex].x
                 + param.landOffset.x
                 + center.x)
-            / param.noiseScale
+            / param.noises[noiseIndex].noiseScale
             * frequency;
     }
 
-    float CalculateEffectiveY(float y, float halfSize, int octaveIndex,
-                                     float frequency, Vector2 center)
+    float CalculateEffectiveY(float y, float halfSize,
+                              int noiseIndex, int octaveIndex,
+                              float frequency, Vector2 center)
     {
         return (y
                 - halfSize
-                + octaveOffsets[octaveIndex].y
+                + octaveOffsets[noiseIndex][octaveIndex].y
                 + param.landOffset.y
                 + center.y)
-            / (param.noiseScale)
+            / (param.noises[noiseIndex].noiseScale)
             * frequency;
     }
 

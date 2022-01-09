@@ -122,7 +122,7 @@ public class ProceduralTerrain : MonoBehaviour
         forest.transform.name = "Forest";
 
         Forest v = new Forest(vegetationParam, center,
-                              forest.transform, 58);
+                              forest.transform, 58, heightMapParam.uniformScale);
         v.Bake(previewHeightMap, heightMapParam.GetMaxHeight());
         v.Plant();
     }
@@ -142,7 +142,8 @@ public class ProceduralTerrain : MonoBehaviour
         quadFoliage.transform.name = name;
 
         Foliage v = new Foliage(param, center,
-                                quadFoliage.transform, 58);
+                                quadFoliage.transform, 58,
+                                heightMapParam.uniformScale);
         v.Bake(previewHeightMap, heightMapParam.GetMaxHeight());
         v.Plant();
     }
@@ -241,6 +242,12 @@ public class ProceduralTerrain : MonoBehaviour
             heightMapParam.onChange += MakePreviewTerrain;
         }
 
+        foreach(NoiseParams param in heightMapParam.noises)
+        {
+            param.onChange -= MakePreviewTerrain;
+            param.onChange += MakePreviewTerrain;
+        }
+
         if (texturePreset)
         {
             texturePreset.onChange -= SetTexturesToMaterial;
@@ -303,7 +310,8 @@ public class ProceduralTerrain : MonoBehaviour
            Vector2 center, Transform parent,
            int seed)
     {
-        Forest veg = new Forest(vegetationParam, center, parent, seed);
+        Forest veg = new Forest(vegetationParam, center, parent, seed,
+                                heightMapParam.uniformScale);
         veg.Bake(heightMap, heightMapParam.GetMaxHeight());
 
         lock (treeLine)
@@ -330,7 +338,8 @@ public class ProceduralTerrain : MonoBehaviour
                      Vector2 center, Transform parent, int seed,
                      FoliageParams[] param)
     {
-        Foliage foliage = new Foliage(param, center, parent, seed);
+        Foliage foliage = new Foliage(param, center, parent, seed,
+                                      heightMapParam.uniformScale);
 
         foliage.Bake(heightMap, heightMapParam.GetMaxHeight());
 

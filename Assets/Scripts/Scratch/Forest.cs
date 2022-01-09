@@ -12,18 +12,20 @@ public class Forest
     readonly Transform parent;
 
     readonly int seed;
+    readonly float uniformScale;
     readonly float maxSteepness;
 
     bool isPlanted;
     List<Action> readyTrees;
 
     public Forest(TreeParams[] parameters, Vector2 center,
-                      Transform parent, int seed)
+                      Transform parent, int seed, float uniformScale)
     {
         this.parameters = parameters;
         this.center = center;
         this.parent = parent;
         this.seed = seed;
+        this.uniformScale = uniformScale;
 
         float[,] maxSlopeMap = new float[,] { { 0, 1, }, { 1, 1 } };
         this.maxSteepness = Math.GetSteepness(maxSlopeMap, 0, 1, 0, 0, 2, 2);
@@ -106,17 +108,17 @@ public class Forest
                     float h = Math.InterpolateHeight(x, y, offsetX, offsetY, heightMap);
 
                     float steepness = Math.GetSteepness(heightMap,
-                           h,
-                           maxHeight,
-                           Mathf.RoundToInt(x + offsetX),
-                           Mathf.RoundToInt(y + offsetY),
-                           width,
-                           height);
+                                                        h,
+                                                        maxHeight,
+                                                        Mathf.RoundToInt(x + offsetX),
+                                                        Mathf.RoundToInt(y + offsetY),
+                                                        width,
+                                                        height);
 
                     h += random.Range(param.yMinOffset, param.yMaxOffset);
 
                     if (h >= param.minHeight && h <= param.maxHeight &&
-                       steepness >= minSlope && steepness <= param.maxSlope)
+                       steepness >= minSlope && steepness <= maxSlope)
                     {
                         float scale = random.Range(param.minScale, param.maxScale) +
                             param.baseScale;
@@ -125,7 +127,7 @@ public class Forest
                                                      param.maxRotation);
                         Vector3 position = new Vector3(effectiveX,
                                                        h + scale * 0.5f,
-                                                       effectiveY);
+                                                       effectiveY) * uniformScale;
 
                         readyTrees.Add(
                             () => maker.Make(position, scale3,
@@ -140,7 +142,7 @@ public class Forest
                         x += (int)(scale + xScatter);
 
                         float yScatter = random.Range(param.minScatter,
-                                                       param.maxScatter);
+                                                      param.maxScatter);
                         y += (int)(scale + yScatter);
                         if (y >= innerHeight) return;
                     }

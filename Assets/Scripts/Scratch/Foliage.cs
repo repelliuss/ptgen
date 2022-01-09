@@ -14,16 +14,19 @@ public class Foliage
     readonly int seed;
     readonly float maxSteepness;
 
+    readonly float uniformScale;
+
     bool isPlanted;
     List<Action> readyFoliage;
 
     public Foliage(FoliageParams[] parameters, Vector2 center,
-                   Transform parent, int seed)
+                   Transform parent, int seed, float uniformScale)
     {
         this.parameters = parameters;
         this.center = center;
         this.parent = parent;
         this.seed = seed;
+        this.uniformScale = uniformScale;
 
         float[,] maxSlopeMap = new float[,] { { 0, 1, }, { 1, 1 } };
         this.maxSteepness = Math.GetSteepness(maxSlopeMap, 0, 1, 0, 0, 2, 2);
@@ -120,7 +123,7 @@ public class Foliage
                                                         height);
 
                     if (h >= heightLow && h <= heightHigh &&
-                       steepness >= minSlope && steepness <= param.maxSlope)
+                       steepness >= minSlope && steepness <= maxSlope)
                     {
                         float widthScale = random.Range(param.widthScale.x,
                                                     param.widthScale.y);
@@ -135,7 +138,7 @@ public class Foliage
 
                         Vector3 position = new Vector3(effectiveX,
                                                        h,
-                                                       effectiveY);
+                                                       effectiveY) * uniformScale;
 
                         readyFoliage.Add(
                             () => maker.Make(position, scale3,

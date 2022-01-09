@@ -6,7 +6,7 @@ public class Player : MonoBehaviour {
     RigidbodyFirstPersonController fps;
     Rigidbody rigid;
 
-    void Start()
+    void Awake()
     {
         free = GetComponent<FreeFlyCamera>();
         fps = GetComponent<RigidbodyFirstPersonController>();
