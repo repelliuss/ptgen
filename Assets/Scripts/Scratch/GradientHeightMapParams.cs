@@ -14,6 +14,8 @@ public class GradientHeightMapParams : UpdatableScriptableObject
     public AnimationCurve heightCurve;
     public NoiseParams[] noises;
 
+    public ThermalParams thermalParam;
+
     public Vector2[][] CalculateOctaveOffsets()
     {
         Vector2[][] offsets = new Vector2[noises.Length][];

@@ -61,3 +61,4 @@ MonoBehaviour:
   noises:
   - {fileID: 11400000, guid: 43c92e7697afef824955900e834b18d4, type: 2}
   - {fileID: 11400000, guid: 135c103cfb723ae4aa8aba0c6f46044a, type: 2}
+  thermalParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}

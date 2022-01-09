@@ -72,7 +72,8 @@ public class Shoreline
             {
                 if (heightMap[x, y] < waterLevel)
                 {
-                    List<Vector2Int> neighbours = GenerateNeighbours(x, y);
+                    List<Vector2Int> neighbours = Math.GenerateNeighbours(x, y,
+                                                                          width, height);
 
                     foreach (Vector2Int n in neighbours)
                     {
@@ -130,34 +131,5 @@ public class Shoreline
     public void SetActive(bool activity)
     {
         if(shoreLine != null) shoreLine.SetActive(activity);
-    }
-
-    void AddNeighbour(List<Vector2Int> neighbours, int x, int y)
-    {
-        neighbours.Add(new Vector2Int(x, y));
-    }
-
-    List<Vector2Int> GenerateNeighbours(int x, int y)
-    {
-        List<Vector2Int> neighbours = new List<Vector2Int>();
-
-        if (x != 0)
-        {
-            if (y != 0) AddNeighbour(neighbours, x - 1, y - 1);
-            AddNeighbour(neighbours, x - 1, y);
-            if (y < height - 1) AddNeighbour(neighbours, x - 1, y + 1);
-        }
-
-        if (y != 0) AddNeighbour(neighbours, x, y - 1);
-        if (y < height - 1) AddNeighbour(neighbours, x, y + 1);
-
-        if (x < width - 1)
-        {
-            if (y != 0) AddNeighbour(neighbours, x + 1, y - 1);
-            AddNeighbour(neighbours, x + 1, y);
-            if (y < height - 1) AddNeighbour(neighbours, x + 1, y + 1);
-        }
-
-        return neighbours;
     }
 }

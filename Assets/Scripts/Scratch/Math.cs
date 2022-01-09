@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public static class Math {
     public static Vector3 QuadLerp(Vector3 a, Vector3 b,
@@ -45,5 +46,34 @@ public static class Math {
         float steep = gradient.magnitude;
 
         return steep;
+    }
+
+    static void AddNeighbour(List<Vector2Int> neighbours, int x, int y)
+    {
+        neighbours.Add(new Vector2Int(x, y));
+    }
+
+    public static List<Vector2Int> GenerateNeighbours(int x, int y, int width, int height)
+    {
+        List<Vector2Int> neighbours = new List<Vector2Int>();
+
+        if (x != 0)
+        {
+            if (y != 0) AddNeighbour(neighbours, x - 1, y - 1);
+            AddNeighbour(neighbours, x - 1, y);
+            if (y < height - 1) AddNeighbour(neighbours, x - 1, y + 1);
+        }
+
+        if (y != 0) AddNeighbour(neighbours, x, y - 1);
+        if (y < height - 1) AddNeighbour(neighbours, x, y + 1);
+
+        if (x < width - 1)
+        {
+            if (y != 0) AddNeighbour(neighbours, x + 1, y - 1);
+            AddNeighbour(neighbours, x + 1, y);
+            if (y < height - 1) AddNeighbour(neighbours, x + 1, y + 1);
+        }
+
+        return neighbours;
     }
 }

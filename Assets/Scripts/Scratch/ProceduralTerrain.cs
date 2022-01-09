@@ -240,12 +240,18 @@ public class ProceduralTerrain : MonoBehaviour
         {
             heightMapParam.onChange -= MakePreviewTerrain;
             heightMapParam.onChange += MakePreviewTerrain;
-        }
 
-        foreach(NoiseParams param in heightMapParam.noises)
-        {
-            param.onChange -= MakePreviewTerrain;
-            param.onChange += MakePreviewTerrain;
+            foreach(NoiseParams param in heightMapParam.noises)
+            {
+                param.onChange -= MakePreviewTerrain;
+                param.onChange += MakePreviewTerrain;
+            }
+
+            if(heightMapParam.thermalParam)
+            {
+                heightMapParam.thermalParam.onChange -= MakePreviewTerrain;
+                heightMapParam.thermalParam.onChange += MakePreviewTerrain;
+            }
         }
 
         if (texturePreset)

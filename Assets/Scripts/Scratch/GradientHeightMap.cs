@@ -41,6 +41,12 @@ public class GradientHeightMapMaker
             }
         }
 
+        if(param.thermalParam != null)
+        {
+            Erosion erosion = new Erosion(heightMap, param.thermalParam);
+            erosion.Thermal();
+        }
+
         return heightMap;
     }
 
