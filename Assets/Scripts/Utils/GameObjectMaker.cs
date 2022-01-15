@@ -23,7 +23,7 @@ public class GameObjectMaker
         Renderer rend;
         if(!instance.TryGetComponent<Renderer>(out rend))
         {
-            rend = instance.AddComponent<Renderer>();
+            rend = instance.AddComponent<MeshRenderer>();
         }
         SetMaterials(rend, color1, color2, color2bias);
     }
