@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d973abed306a17456a5be83789b11fc6, type: 3}
+  m_Name: IslandStarfish
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  gobject: {fileID: 1569274279214250, guid: de878145e20d24dcf9566010929c116c, type: 3}
+  minHeight: 0
+  maxHeight: 1
+  minSlope: 0
+  maxSlope: 6.8
+  widthScale: {x: 1, y: 1}
+  heightScale: {x: 1, y: 1}
+  baseWidthScale: 10
+  baseHeightScale: 10
+  minScatter: 0
+  maxScatter: 0
+  xSpacing: 3
+  ySpacing: 4
+  color1: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
+  color2: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
+  color2Bias: -0.209
+  minRotation: 0
+  maxRotation: 0
+  overlap: 0.01
+  feather: 1.77
+  density: 0.532
+  maxCount: 1

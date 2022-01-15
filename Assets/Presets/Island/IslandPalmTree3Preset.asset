@@ -22,15 +22,15 @@ MonoBehaviour:
   maxScale: 0.7
   baseScale: 0.06
   minScatter: 0
-  maxScatter: 2.87
+  maxScatter: 6.1
   xSpacing: 1
   ySpacing: 6
   yMinOffset: 0
   yMaxOffset: 0
   color1: {r: 1, g: 1, b: 1, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
-  color2Bias: 0
+  color2: {r: 0.8396226, g: 0.8326901, b: 0.7010057, a: 1}
+  color2Bias: -0.477
   minRotation: 0
   maxRotation: 360
   density: 0.04
-  maxCount: 3
+  maxCount: 9

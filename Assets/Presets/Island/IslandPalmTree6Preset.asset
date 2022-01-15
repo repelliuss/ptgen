@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6860d30d1ccfab3cfa5be05a68975aea, type: 3}
-  m_Name: IslandPalmTreePreset
+  m_Name: IslandPalmTree6Preset
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  gobject: {fileID: 100000, guid: 1a1e8172081b08b41a52cc84e179ac2d, type: 3}
-  minHeight: 3.36
-  maxHeight: 16
-  minSlope: 0
-  maxSlope: 28.8
-  minScale: 0.8
-  maxScale: 1
+  gobject: {fileID: 100000, guid: fbc5cd716e0ce9c41b07f09611b2fe28, type: 3}
+  minHeight: 0
+  maxHeight: 89.1
+  minSlope: 7.2
+  maxSlope: 61.5
+  minScale: 0.92
+  maxScale: 1.09
   baseScale: 0
   minScatter: 0
-  maxScatter: 12.39
-  xSpacing: 14
+  maxScatter: 0
+  xSpacing: 1
   ySpacing: 1
   yMinOffset: 0
   yMaxOffset: 0
   color1: {r: 1, g: 1, b: 1, a: 1}
-  color2: {r: 0.7264151, g: 0.6396807, b: 0.5242524, a: 1}
-  color2Bias: -0.261
+  color2: {r: 1, g: 1, b: 1, a: 1}
+  color2Bias: 0
   minRotation: 0
   maxRotation: 360
-  density: 0.04
-  maxCount: 36
+  density: 1
+  maxCount: 5
