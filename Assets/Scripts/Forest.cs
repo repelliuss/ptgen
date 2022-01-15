@@ -22,7 +22,7 @@ public class Forest
                       Transform parent, int seed, float uniformScale)
     {
         this.parameters = parameters;
-        this.center = center;
+        this.center = center / uniformScale;
         this.parent = parent;
         this.seed = seed;
         this.uniformScale = uniformScale;
@@ -128,7 +128,7 @@ public class Forest
                         int yRotation = random.Range(param.minRotation,
                                                      param.maxRotation);
                         Vector3 position = new Vector3(effectiveX * uniformScale,
-                                                       h + (uniformScale + scale) * 0.5f,
+                                                       h + (scale) * 0.5f,
                                                        effectiveY * uniformScale);
                         readyTrees.Add(
                             () => maker.Make(position, scale3,

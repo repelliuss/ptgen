@@ -23,7 +23,7 @@ public class Foliage
                    Transform parent, int seed, float uniformScale)
     {
         this.parameters = parameters;
-        this.center = center;
+        this.center = center / uniformScale;
         this.parent = parent;
         this.seed = seed;
         this.uniformScale = uniformScale;
@@ -132,13 +132,14 @@ public class Foliage
                         Vector3 scale3 = new Vector3(widthScale + param.baseWidthScale,
                                                      yScale + param.baseHeightScale,
                                                      widthScale + param.baseWidthScale);
+                        scale3 *= uniformScale;
 
                         int yRotation = random.Range(param.minRotation,
                                                      param.maxRotation);
 
-                        Vector3 position = new Vector3(effectiveX,
-                                                       h,
-                                                       effectiveY) * uniformScale;
+                        Vector3 position = new Vector3(effectiveX * uniformScale,
+                                                       h * uniformScale,
+                                                       effectiveY * uniformScale);
 
                         readyFoliage.Add(
                             () => maker.Make(position, scale3,

@@ -12,6 +12,7 @@ public class Shoreline
     float halfWidth;
     float halfHeight;
     float waterLevel;
+    float uniformScale;
     Transform parent;
     Vector2 center;
 
@@ -23,6 +24,7 @@ public class Shoreline
     List<MeshFilter> quadFilters;
 
     public Shoreline(float[,] heightMap, HeightMapNeighboursData ndata,
+                     float uniformScale,
                      float waterLevel,
                      Material shoreLineMaterial,
                      Vector2 center, Transform parent,
@@ -36,11 +38,12 @@ public class Shoreline
         this.halfHeight = height / 2f;
         this.waterLevel = waterLevel;
         this.parent = parent;
-        this.center = center;
+        this.center = center / uniformScale;
         this.shoreLine = shoreLine;
         this.shoreLineMaterial = shoreLineMaterial;
         this.quadFilters = new List<MeshFilter>();
         this.readyQuads = new List<Action>();
+        this.uniformScale = uniformScale;
     }
 
     public void Destroy()
@@ -52,7 +55,7 @@ public class Shoreline
     {
         GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
         quadFilters.Add(quad.GetComponent<MeshFilter>());
-        quad.transform.localScale = Vector3.one * 5.0f;
+        quad.transform.localScale = Vector3.one * 5.0f * uniformScale;
         quad.transform.parent = shoreLine.transform;
         quad.transform.position = position;
         quad.transform.LookAt(rotateTo);
@@ -81,7 +84,7 @@ public class Shoreline
                         {
                             float effectiveX = (x - halfWidth) + center.x;
                             float effectiveY = (y - halfHeight) + center.y;
-                            Vector3 position = new Vector3(effectiveX, waterLevel, effectiveY);
+                            Vector3 position = new Vector3(effectiveX, waterLevel, effectiveY) * uniformScale;
                             Vector3 rotateTo = new Vector3((n.y - halfWidth) + center.x,
                                                            waterLevel,
                                                            (n.y - halfHeight) + center.y);
