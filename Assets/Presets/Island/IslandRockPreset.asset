@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d973abed306a17456a5be83789b11fc6, type: 3}
-  m_Name: DefaultRockParam
+  m_Name: IslandRockPreset
   m_EditorClassIdentifier: 
   autoUpdate: 1
   gobject: {fileID: -927199367670048503, guid: 8e41f14c6552d48e6a7992aaecc808e4, type: 3}
-  minHeight: 3
-  maxHeight: 8
+  minHeight: 0
+  maxHeight: 3
   minSlope: 0
-  maxSlope: 90
+  maxSlope: 30.9
   widthScale: {x: 1, y: 1}
   heightScale: {x: 1, y: 1}
-  baseWidthScale: 0
-  baseHeightScale: 0
+  baseWidthScale: -0.48
+  baseHeightScale: -0.57
   minScatter: 0
   maxScatter: 0.46
   xSpacing: 1
   ySpacing: 1
-  color1: {r: 1, g: 1, b: 1, a: 1}
-  color2: {r: 0.1792453, g: 0.060030267, b: 0.060030267, a: 1}
-  color2Bias: 0
+  color1: {r: 0.6415094, g: 0.6384834, b: 0.6384834, a: 1}
+  color2: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
+  color2Bias: -0.209
   minRotation: 0
   maxRotation: 360
   overlap: 0.01
-  feather: 0.05
-  density: 0.014
-  maxCount: 100
+  feather: 1.77
+  density: 0.009
+  maxCount: 30

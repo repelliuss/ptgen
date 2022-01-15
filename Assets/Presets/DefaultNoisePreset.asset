@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92a366b2c540f044588bcf9205e5f8a2, type: 3}
-  m_Name: SecondaryNoiseParam
+  m_Name: DefaultNoisePreset
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  octaveCount: 1
-  noiseScale: 71.6
+  octaveCount: 6
+  noiseScale: 76
   persistance: 0.5
   lacunarity: 2
   seed: 0

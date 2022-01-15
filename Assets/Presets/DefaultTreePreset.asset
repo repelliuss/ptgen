@@ -15,9 +15,9 @@ MonoBehaviour:
   autoUpdate: 1
   gobject: {fileID: -927199367670048503, guid: 25fa881dbd110e38a00062d88f962b59, type: 3}
   minHeight: 2
-  maxHeight: 25.84
+  maxHeight: 88.6
   minSlope: 0
-  maxSlope: 3.7
+  maxSlope: 6.8
   minScale: 1
   maxScale: 1.5
   baseScale: 0
@@ -33,4 +33,4 @@ MonoBehaviour:
   minRotation: 0
   maxRotation: 360
   density: 0.067
-  maxCount: 123
+  maxCount: 300

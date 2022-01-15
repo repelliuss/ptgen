@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d973abed306a17456a5be83789b11fc6, type: 3}
-  m_Name: DefaultFernParam
+  m_Name: IslandFoliagePalm
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  gobject: {fileID: 8865179257978726342, guid: 8df60505fa1e0568ea5889953e716669, type: 3}
-  minHeight: 3.5
-  maxHeight: 8
+  gobject: {fileID: 100000, guid: 3a479a58d415f70419fe5cbf3a1dbc3a, type: 3}
+  minHeight: 7.62
+  maxHeight: 64
   minSlope: 0
-  maxSlope: 49.9
-  widthScale: {x: 1, y: 5}
-  heightScale: {x: 1, y: 5}
-  baseWidthScale: 150
-  baseHeightScale: 150
+  maxSlope: 6.1
+  widthScale: {x: 0.2, y: 0.6}
+  heightScale: {x: 0.2, y: 0.3}
+  baseWidthScale: 0
+  baseHeightScale: 0
   minScatter: 0
   maxScatter: 0
   xSpacing: 1
   ySpacing: 1
   color1: {r: 1, g: 1, b: 1, a: 1}
-  color2: {r: 1, g: 1, b: 1, a: 1}
-  color2Bias: 0
+  color2: {r: 0.38679248, g: 0.33266735, b: 0.24265754, a: 1}
+  color2Bias: -0.555
   minRotation: 0
   maxRotation: 360
   overlap: 0.23
   feather: -4.87
-  density: 0.362
+  density: 0.051
   maxCount: 100
