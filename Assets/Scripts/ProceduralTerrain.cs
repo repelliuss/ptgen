@@ -197,7 +197,7 @@ public class ProceduralTerrain : MonoBehaviour
                                             waterParam.waterLevel,
                                             waterParam.material,
                                             Vector2.zero, previewObject.transform,
-                                            shoreObject);
+                                            shoreObject, waterParam.foamScale);
         shoreLine.BakeQuads();
         shoreLine.PlantQuads();
         shoreLine.PlantShoreLine();
@@ -356,7 +356,7 @@ public class ProceduralTerrain : MonoBehaviour
                                      heightMapParam.uniformScale,
                                      waterParam.waterLevel,
                                      waterParam.material, center, parent,
-                                     shoreLine);
+                                     shoreLine, waterParam.foamScale);
         sh.BakeQuads();
 
         lock (shorelineLine)

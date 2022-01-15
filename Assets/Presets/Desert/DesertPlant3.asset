@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d973abed306a17456a5be83789b11fc6, type: 3}
+  m_Name: DesertPlant3
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  gobject: {fileID: 9124377320881011836, guid: 4ef360f5c54a1cf069e1d2c19331dc93, type: 3}
+  minHeight: 4
+  maxHeight: 5
+  minSlope: 0
+  maxSlope: 5
+  widthScale: {x: 0.2, y: 1.3}
+  heightScale: {x: 0.2, y: 1.3}
+  baseWidthScale: 1.7
+  baseHeightScale: 1.7
+  minScatter: 0
+  maxScatter: 0.26
+  xSpacing: 1
+  ySpacing: 1
+  color1: {r: 1, g: 1, b: 1, a: 1}
+  color2: {r: 1, g: 1, b: 1, a: 1}
+  color2Bias: 0
+  minRotation: 0
+  maxRotation: 360
+  overlap: 0.01
+  feather: 0.01
+  density: 1
+  maxCount: 150

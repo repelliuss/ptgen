@@ -1,5 +1,7 @@
 using UnityEngine;
 
+public enum NormalizeMode { TOTAL, INCREMENTAL };
+
 [CreateAssetMenu()]
 public class HeightMapParams : UpdatableScriptableObject
 {
@@ -15,6 +17,8 @@ public class HeightMapParams : UpdatableScriptableObject
     public ErosionParams thermalParam;
     public ErosionParams windParam;
     public FalloffParams falloffParam;
+
+    public NormalizeMode normMode = NormalizeMode.INCREMENTAL;
 
     public Vector2[][] CalculateOctaveOffsets()
     {

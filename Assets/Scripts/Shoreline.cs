@@ -20,15 +20,16 @@ public class Shoreline
     Material shoreLineMaterial;
 
     List<Action> readyQuads;
-
     List<MeshFilter> quadFilters;
+    float foamScale;
 
     public Shoreline(float[,] heightMap, HeightMapNeighboursData ndata,
                      float uniformScale,
                      float waterLevel,
                      Material shoreLineMaterial,
                      Vector2 center, Transform parent,
-                     GameObject shoreLine)
+                     GameObject shoreLine,
+                     float foamScale)
     {
         this.heightMap = heightMap;
         this.neighbourData = ndata;
@@ -44,6 +45,7 @@ public class Shoreline
         this.quadFilters = new List<MeshFilter>();
         this.readyQuads = new List<Action>();
         this.uniformScale = uniformScale;
+        this.foamScale = foamScale;
     }
 
     public void Destroy()

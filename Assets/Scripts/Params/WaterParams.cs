@@ -8,4 +8,5 @@ public class WaterParams : UpdatableScriptableObject
     public Vector2 waterTileSize;
     public Material material;
     public bool makeShoreline = true;
+    public float foamScale = 5.0f;
 }

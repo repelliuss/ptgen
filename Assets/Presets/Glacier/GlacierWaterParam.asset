@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 1
   gobject: {fileID: 100006, guid: 424e61596293c158caf7248d56c06d8f, type: 3}
-  waterLevel: 32
+  waterLevel: 22
   waterTileSize: {x: 100, y: 200}
   material: {fileID: 2100000, guid: 8db920f5ef1f953d49a5d73dac77a8a6, type: 2}
   makeShoreline: 0
+  foamScale: 5

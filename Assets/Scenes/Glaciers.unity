@@ -829,8 +829,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1213318454}
-  m_LocalRotation: {x: 0.25442213, y: -0.06208878, z: -0.01608234, w: -0.96496415}
-  m_LocalPosition: {x: -26.137772, y: -33.174454, z: -101.556854}
+  m_LocalRotation: {x: -0.1898409, y: 0.7796967, z: 0.2818372, w: 0.52592903}
+  m_LocalPosition: {x: -62.929504, y: -66.61247, z: 22.491554}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1187,7 +1187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8088778561708181208, guid: b49884a43eb0c9f4880d03f7d5712835, type: 3}
       propertyPath: movementSettings.JumpForce
-      value: 150
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 8088778561714040606, guid: b49884a43eb0c9f4880d03f7d5712835, type: 3}
       propertyPath: m_RootOrder

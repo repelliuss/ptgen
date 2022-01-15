@@ -21,11 +21,10 @@ public class GameObjectMaker
         instance.transform.parent = parent;
 
         Renderer rend;
-        if(!instance.TryGetComponent<Renderer>(out rend))
+        if(instance.TryGetComponent<Renderer>(out rend))
         {
-            rend = instance.AddComponent<MeshRenderer>();
+            SetMaterials(rend, color1, color2, color2bias);
         }
-        SetMaterials(rend, color1, color2, color2bias);
     }
 
     void SetMaterials(Renderer renderer, Color color1, Color color2,
@@ -36,9 +35,12 @@ public class GameObjectMaker
 
         foreach (Material mat in materials)
         {
-            mat.SetColor("_Color", Color.Lerp(color1,
-                                              color2,
-                                              color2bias + Random.Range(0f, 1f)));
+            if(mat.HasProperty("_Color"))
+            {
+                mat.SetColor("_Color", Color.Lerp(color1,
+                                                  color2,
+                                                  color2bias + Random.Range(0f, 1f)));
+            }
         }
     }
 }

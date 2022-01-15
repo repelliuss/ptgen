@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d973abed306a17456a5be83789b11fc6, type: 3}
+  m_Name: DesertCactus2
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  gobject: {fileID: 100000, guid: a66b4d595441d244387e1e12f82d7e7e, type: 3}
+  minHeight: 20
+  maxHeight: 48
+  minSlope: 0
+  maxSlope: 32
+  widthScale: {x: 0.5, y: 1.5}
+  heightScale: {x: 0.5, y: 1}
+  baseWidthScale: 1
+  baseHeightScale: 1
+  minScatter: 0.46
+  maxScatter: 3.16
+  xSpacing: 1
+  ySpacing: 1
+  color1: {r: 1, g: 1, b: 1, a: 1}
+  color2: {r: 0.21698111, g: 0.21611026, b: 0.10132608, a: 1}
+  color2Bias: -0.24
+  minRotation: 0
+  maxRotation: 360
+  overlap: 0.01
+  feather: 0.01
+  density: 0.05
+  maxCount: 1

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 
 public class HeightMapNeighboursData
@@ -20,6 +21,8 @@ public class HeightMapMaker
     public HeightMapNeighboursData ndata;
     public float[,] data;
 
+    Func<float, float, float> normalizer;
+
     public HeightMapMaker(HeightMapParams param)
     {
         this.param = param;
@@ -28,6 +31,12 @@ public class HeightMapMaker
         this.heightCurve = new AnimationCurve(param.heightCurve.keys); // For threading
         this.ndata = new HeightMapNeighboursData(HeightMapParams.size,
                                                  HeightMapParams.size);
+
+        if(param.normMode == NormalizeMode.INCREMENTAL)
+        {
+            normalizer = IncrementalNormalize;
+        }
+        else normalizer = TotalNormalize;
     }
 
     public void Make(Vector2 center)
@@ -40,7 +49,7 @@ public class HeightMapMaker
             for (int x = 0; x < size; ++x)
             {
                 float height = FBM(x, y, center);
-                height = Normalize(height, maxHeight);
+                height = normalizer(height, maxHeight);
                 height = heightCurve.Evaluate(height);
                 height *= param.heightScale;
                 heightMap[x, y] = height;
@@ -125,13 +134,16 @@ public class HeightMapMaker
             * frequency;
     }
 
+    public static float TotalNormalize(float height, float maxHeight)
+    {
+        return (height + maxHeight) / (maxHeight * 2f);
+    }
+
     /// unfold value and normalize with a constant
     /// (value + 1) / 2f * maxValue * constant
     /// here constant is 2f
-    public static float Normalize(float height, float maxHeight)
+    public static float IncrementalNormalize(float height, float maxHeight)
     {
-        // REVIEW: check
-        // return (height + maxHeight) / (maxHeight * 2f);
         return (height + 1) / maxHeight;
     }
 }

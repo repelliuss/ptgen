@@ -349,7 +349,8 @@ class TerrainChunker : MonoBehaviour
                     water = GameObject.Instantiate(terrain.waterParam.gobject);
                     water.transform.parent = chunk.transform;
                     Vector3 waterPos = new Vector3(chunk.transform.position.x,
-                                                   terrain.waterParam.waterLevel,
+                                                   terrain.waterParam.waterLevel *
+                                                   terrain.heightMapParam.uniformScale,
                                                    chunk.transform.position.z);
                     water.transform.position = waterPos;
                     water.transform.localScale = waterChunkScale;
