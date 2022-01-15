@@ -10,39 +10,48 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 984eb4040f031eda085f92402cf99cb9, type: 3}
-  m_Name: DefaultHeightMapParam
+  m_Name: SwampHeight
   m_EditorClassIdentifier: 
   autoUpdate: 1
   uniformScale: 1
   landOffset: {x: 0, y: 0}
-  heightScale: 24
+  heightScale: 20
   heightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
+      inSlope: 0.22770251
+      outSlope: 0.22770251
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6407092
+      value: 0.1458911
+      inSlope: 1.3024553
+      outSlope: 1.3024553
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
+      inSlope: 2.377208
+      outSlope: 2.377208
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   noises:
   - {fileID: 11400000, guid: 5facf727cdacfca1697b3b0f651c8e63, type: 2}
-  thermalParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}
-  windParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}
+  thermalParam: {fileID: 0}
+  windParam: {fileID: 0}
   falloffParam: {fileID: 0}
   normMode: 0
