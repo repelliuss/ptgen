@@ -193,6 +193,7 @@ public class ProceduralTerrain : MonoBehaviour
         shoreObject.transform.name = "Shore Line";
         shoreObject.transform.parent = previewObject.transform;
         Shoreline shoreLine = new Shoreline(previewHeightMap, previewNeighboursData,
+                                            heightMapParam.uniformScale,
                                             waterParam.waterLevel,
                                             waterParam.material,
                                             Vector2.zero, previewObject.transform,
@@ -208,6 +209,7 @@ public class ProceduralTerrain : MonoBehaviour
         SetTexturesToMaterial();
         heightMapParam.landOffset.x = worldSeed;
         heightMapParam.landOffset.y = worldSeed;
+        UnityEngine.Random.InitState(worldSeed);
         GameObject previewObject = GameObject.FindGameObjectWithTag("Preview");
         if (previewObject != null) previewObject.SetActive(false);
     }
@@ -351,6 +353,7 @@ public class ProceduralTerrain : MonoBehaviour
                        Vector2 center, Transform parent, GameObject shoreLine)
     {
         Shoreline sh = new Shoreline(heightMap, neighbourData,
+                                     heightMapParam.uniformScale,
                                      waterParam.waterLevel,
                                      waterParam.material, center, parent,
                                      shoreLine);

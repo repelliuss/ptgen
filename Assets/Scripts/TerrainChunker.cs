@@ -41,6 +41,9 @@ class TerrainChunker : MonoBehaviour
 
     static Camera mainCam;
 
+    static bool useMeshDensity;
+    static float meshDensity;
+
     void Start()
     {
         terrain = FindObjectOfType<ProceduralTerrain>();
@@ -48,7 +51,7 @@ class TerrainChunker : MonoBehaviour
         chunks = new Dictionary<Vector2, Chunk>();
 
         player.position = new Vector3(0,
-                                      terrain.heightMapParam.heightScale + 10f,
+                                      terrain.heightMapParam.GetMaxHeight() + 20f,
                                       0);
 
         maxViewDistance = lods[lods.Length - 1].viewDistance;
@@ -73,6 +76,12 @@ class TerrainChunker : MonoBehaviour
             quadFoliageChunkDistance;
 
         mainCam = Camera.main;
+
+        useMeshDensity = terrain.heightMapParam.falloffParam != null;
+        if(useMeshDensity)
+        {
+            meshDensity = terrain.heightMapParam.falloffParam.density;
+        }
 
         UpdateChunks();
     }
@@ -190,6 +199,8 @@ class TerrainChunker : MonoBehaviour
         static GameObject instantiatorObject;
         static Instantiator instantiator;
 
+        bool noMesh;
+
         public Chunk(Vector2 position, int chunkSize,
                      Material material,
                      TerrainChunker parent, LOD[] lods,
@@ -236,6 +247,16 @@ class TerrainChunker : MonoBehaviour
                 instantiator = instantiatorObject.AddComponent<Instantiator>();
             }
 
+            if(useMeshDensity)
+            {
+                if(UnityEngine.Random.Range(0f, 1f) >= meshDensity &&
+                   !(position.x == 0 && position.y == 0))
+                {
+                    noMesh = true;
+                }
+            }
+
+            if(!noMesh)
             terrain.RequestHeightMap(OnHeightMapReceived, position);
         }
 
