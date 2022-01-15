@@ -20,8 +20,12 @@ public class GameObjectMaker
         instance.transform.Rotate(0, yRotation, 0);
         instance.transform.parent = parent;
 
-        SetMaterials(instance.GetComponent<Renderer>(),
-                     color1, color2, color2bias);
+        Renderer rend;
+        if(!instance.TryGetComponent<Renderer>(out rend))
+        {
+            rend = instance.AddComponent<Renderer>();
+        }
+        SetMaterials(rend, color1, color2, color2bias);
     }
 
     void SetMaterials(Renderer renderer, Color color1, Color color2,
