@@ -122,13 +122,14 @@ public class Forest
                     {
                         float scale = random.Range(param.minScale, param.maxScale) +
                             param.baseScale;
+                        scale *= uniformScale;
+
                         Vector3 scale3 = new Vector3(scale, scale, scale);
                         int yRotation = random.Range(param.minRotation,
                                                      param.maxRotation);
-                        Vector3 position = new Vector3(effectiveX,
-                                                       h + scale * 0.5f,
-                                                       effectiveY) * uniformScale;
-
+                        Vector3 position = new Vector3(effectiveX * uniformScale,
+                                                       h + (uniformScale + scale) * 0.5f,
+                                                       effectiveY * uniformScale);
                         readyTrees.Add(
                             () => maker.Make(position, scale3,
                                              yRotation, parent,
