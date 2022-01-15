@@ -83,8 +83,10 @@ public class Forest
         {
             TreeParams param = parameters[i];
             GameObjectMaker maker = new GameObjectMaker(param.gobject);
-            float maxSlope = Mathf.Lerp(0, maxSteepness, param.maxSlope / 90);
-            float minSlope = Mathf.Lerp(0, maxSteepness, param.minSlope / 90);
+            float maxSlope = Mathf.InverseLerp(0, maxSteepness, param.maxSlope / 90);
+            float minSlope = Mathf.InverseLerp(0, maxSteepness, param.minSlope / 90);
+            minSlope *= 2;
+            maxSlope *= 2;
             // + 1 is because anchor of a tree is not at its perfect center
             // so when rotated, it looks out of chunk
             int innerHeight = height - placementOffsetAsInt - 1 - Mathf.CeilToInt(param.ySpacing);
