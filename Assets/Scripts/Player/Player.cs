@@ -15,7 +15,7 @@ public class Player : MonoBehaviour {
 
     public string GetCameraName()
     {
-        if(fps.enabled) return "FIRST PERSON";
+        if(!fps.enabled) return "FIRST PERSON";
         else return "FREE CAM";
     }
 
