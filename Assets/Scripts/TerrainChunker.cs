@@ -327,7 +327,11 @@ class TerrainChunker : MonoBehaviour
                 TryBakeTrees();
                 TryAddFoliage();
                 TryAddQuadFoliage();
-                TryAddShoreLine();
+
+                if(terrain.waterParam.makeShoreline)
+                {
+                    TryAddShoreLine();
+                }
             }
 
             TryAddWater();

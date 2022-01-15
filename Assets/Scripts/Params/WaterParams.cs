@@ -7,4 +7,5 @@ public class WaterParams : UpdatableScriptableObject
     public float waterLevel = 3f;
     public Vector2 waterTileSize;
     public Material material;
+    public bool makeShoreline = true;
 }

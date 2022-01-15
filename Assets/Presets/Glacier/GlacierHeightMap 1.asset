@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 984eb4040f031eda085f92402cf99cb9, type: 3}
+  m_Name: GlacierHeightMap 1
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  uniformScale: 1
+  landOffset: {x: 0, y: 0}
+  heightScale: 64
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.0000001
+      outSlope: 1.0000001
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.35998678
+      value: 0.3599868
+      inSlope: 1.0318367
+      outSlope: 1.0318367
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.37547922
+      value: 0.3764657
+      inSlope: 0.0016271485
+      outSlope: 0.0016271485
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.48497868
+      value: 0.3786613
+      inSlope: 0.036673434
+      outSlope: 0.036673434
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.98638916
+      value: 0.38627625
+      inSlope: 0.015187039
+      outSlope: 0.015187039
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  noises:
+  - {fileID: 11400000, guid: 9801569bafa27de738774a011dd0e951, type: 2}
+  thermalParam: {fileID: 11400000, guid: dc84260ce33e77ce8aceda6825e1bfbb, type: 2}
+  windParam: {fileID: 11400000, guid: f0f696fc6d6d0411b8fa564e7a28f601, type: 2}
+  falloffParam: {fileID: 0}

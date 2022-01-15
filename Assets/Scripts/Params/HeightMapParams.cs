@@ -5,7 +5,6 @@ public class HeightMapParams : UpdatableScriptableObject
 {
     public const int size = 129;
 
-    [Min(1)]
     public float uniformScale = 1;
 
     public Vector2 landOffset;
