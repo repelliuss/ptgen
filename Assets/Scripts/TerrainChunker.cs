@@ -256,7 +256,6 @@ class TerrainChunker : MonoBehaviour
                 }
             }
 
-            if(!noMesh)
             terrain.RequestHeightMap(OnHeightMapReceived, position);
         }
 
@@ -282,7 +281,7 @@ class TerrainChunker : MonoBehaviour
                 float distToPlayer = Mathf.Sqrt(chunkBounds.SqrDistance(playerPos));
                 bool isVisible = distToPlayer <= maxViewDistance;
 
-                if (isVisible)
+                if (isVisible && !noMesh)
                 {
                     int lodIndex = 0;
                     int i = 0;
@@ -309,7 +308,10 @@ class TerrainChunker : MonoBehaviour
                     }
 
                     colliderMesh.RequestMesh(heightMap);
+                }
 
+                if(isVisible)
+                {
                     activeChunks.Add(this);
                 }
 
@@ -319,12 +321,16 @@ class TerrainChunker : MonoBehaviour
 
         public void TryBakeData()
         {
-            TryBakeCollider();
-            TryBakeTrees();
-            TryAddFoliage();
-            TryAddQuadFoliage();
+            if(!noMesh)
+            {
+                TryBakeCollider();
+                TryBakeTrees();
+                TryAddFoliage();
+                TryAddQuadFoliage();
+                TryAddShoreLine();
+            }
+
             TryAddWater();
-            TryAddShoreLine();
         }
 
         public void TryAddWater()
