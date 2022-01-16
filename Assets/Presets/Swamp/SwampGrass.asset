@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d973abed306a17456a5be83789b11fc6, type: 3}
+  m_Name: SwampGrass
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  gobject: {fileID: 100000, guid: 7933582a2b46d8148a57965afad83ee6, type: 3}
+  minHeight: 0
+  maxHeight: 2
+  minSlope: 0
+  maxSlope: 0.2
+  widthScale: {x: 1, y: 3}
+  heightScale: {x: 0.5, y: 0.8}
+  baseWidthScale: 0
+  baseHeightScale: 0
+  minScatter: 0
+  maxScatter: 0
+  xSpacing: 1
+  ySpacing: 1
+  color1: {r: 1, g: 1, b: 1, a: 1}
+  color2: {r: 0.6415094, g: 0.5234959, b: 0.5234959, a: 1}
+  color2Bias: 0.505
+  minRotation: 0
+  maxRotation: 360
+  overlap: 0.23
+  feather: -4.87
+  density: 0.021
+  maxCount: 15
