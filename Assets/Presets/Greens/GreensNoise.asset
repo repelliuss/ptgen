@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GreensNoise
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  octaveCount: 4
-  noiseScale: 60.5
+  octaveCount: 6
+  noiseScale: 75.25
   persistance: 0.5
   lacunarity: 2
   seed: 0

@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 984eb4040f031eda085f92402cf99cb9, type: 3}
+  m_Name: GreensHeight
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  uniformScale: 1
+  landOffset: {x: 0, y: 0}
+  heightScale: 72
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.052707817
+      value: -0.1301308
+      inSlope: -1.9106528
+      outSlope: -1.9106528
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.068178214
+      value: -0.12308244
+      inSlope: 0.339329
+      outSlope: 0.339329
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.084458075
+      value: -0.10612289
+      inSlope: 0.5777554
+      outSlope: 0.5777554
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.11446923
+      value: -0.07243478
+      inSlope: 0.27886096
+      outSlope: 0.27886096
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.13942058
+      value: -0.043100793
+      inSlope: 1.0059646
+      outSlope: 1.0059646
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1659626
+      value: -0.0051166546
+      inSlope: 0.9451745
+      outSlope: 0.9451745
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.19140017
+      value: 0.019819418
+      inSlope: -0.02536974
+      outSlope: -0.02536974
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.28106806
+    - serializedVersion: 3
+      time: 0.22925942
+      value: 0.021182487
+      inSlope: -0.0060092104
+      outSlope: -0.0060092104
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5191114
+      value: 0.08125594
+      inSlope: 0.3259726
+      outSlope: 0.3259726
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3185677
+      outWeight: 0.534614
+    - serializedVersion: 3
+      time: 0.6796031
+      value: 0.13366644
+      inSlope: 0.41999674
+      outSlope: 0.41999674
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7362802
+      value: 0.16125461
+      inSlope: 0.7816855
+      outSlope: 0.7816855
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.37427652
+    - serializedVersion: 3
+      time: 0.91423535
+      value: 0.6518522
+      inSlope: 3.8796425
+      outSlope: 3.8796425
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 0
+    m_PostInfinity: 0
+    m_RotationOrder: 4
+  noises:
+  - {fileID: 11400000, guid: 04021fcafb08609028bd9988bdf66413, type: 2}
+  - {fileID: 11400000, guid: f68f3856bad8ca3afabf89099bc9221d, type: 2}
+  thermalParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}
+  windParam: {fileID: 0}
+  falloffParam: {fileID: 0}
+  normMode: 1

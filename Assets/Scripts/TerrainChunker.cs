@@ -51,7 +51,7 @@ class TerrainChunker : MonoBehaviour
         chunks = new Dictionary<Vector2, Chunk>();
 
         player.position = new Vector3(0,
-                                      terrain.heightMapParam.GetMaxHeight() + 20f,
+                                      terrain.heightMapParam.GetMaxHeight() + 5f,
                                       0);
 
         maxViewDistance = lods[lods.Length - 1].viewDistance;
