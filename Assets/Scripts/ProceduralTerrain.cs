@@ -90,7 +90,8 @@ public class ProceduralTerrain : MonoBehaviour
         if (previewObject == null)
         {
             previewObject = GameObject.FindGameObjectWithTag("Preview");
-            if(previewObject == null) {
+            if (previewObject == null)
+            {
                 previewObject = new GameObject("Preview Procedural Terrain");
                 previewObject.tag = "Preview";
             }
@@ -115,13 +116,13 @@ public class ProceduralTerrain : MonoBehaviour
 
     void PreviewForest()
     {
-        if(previewObject == null || previewHeightMap == null) MakePreviewTerrain();
+        if (previewObject == null || previewHeightMap == null) MakePreviewTerrain();
 
         Vector2 center = new Vector2(previewObject.transform.position.x,
                                      previewObject.transform.position.z);
 
-        if(previewObject.transform.childCount > 0)
-        DestroyImmediate(previewObject.transform.GetChild(0).gameObject);
+        if (previewObject.transform.childCount > 0)
+            DestroyImmediate(previewObject.transform.GetChild(0).gameObject);
 
         GameObject forest = new GameObject();
         forest.transform.parent = previewObject.transform;
@@ -135,13 +136,13 @@ public class ProceduralTerrain : MonoBehaviour
 
     void PreviewFoliageHelper(FoliageParams[] param, string name)
     {
-        if(previewObject == null || previewHeightMap == null) MakePreviewTerrain();
+        if (previewObject == null || previewHeightMap == null) MakePreviewTerrain();
 
         Vector2 center = new Vector2(previewObject.transform.position.x,
                                      previewObject.transform.position.z);
 
-        if(previewObject.transform.childCount > 0)
-        DestroyImmediate(previewObject.transform.GetChild(0).gameObject);
+        if (previewObject.transform.childCount > 0)
+            DestroyImmediate(previewObject.transform.GetChild(0).gameObject);
 
         GameObject quadFoliage = new GameObject();
         quadFoliage.transform.parent = previewObject.transform;
@@ -166,12 +167,12 @@ public class ProceduralTerrain : MonoBehaviour
 
     public void PreviewWater()
     {
-        if(previewObject == null || previewHeightMap == null) MakePreviewTerrain();
+        if (previewObject == null || previewHeightMap == null) MakePreviewTerrain();
 
-        if(previewWater == null)
+        if (previewWater == null)
         {
             previewWater = GameObject.FindWithTag("Water");
-            if(previewWater == null)
+            if (previewWater == null)
             {
                 previewWater = GameObject.Instantiate(waterParam.gobject);
             }
@@ -189,19 +190,22 @@ public class ProceduralTerrain : MonoBehaviour
                                               chunkSize / waterParam.waterTileSize.y * 2);
         previewWater.transform.localScale = waterChunkScale;
 
-        GameObject shoreObject = new GameObject();
-        shoreObject.transform.name = "Shore Line";
-        shoreObject.transform.parent = previewObject.transform;
-        Shoreline shoreLine = new Shoreline(previewHeightMap, previewNeighboursData,
-                                            heightMapParam.uniformScale,
-                                            waterParam.waterLevel,
-                                            waterParam.material,
-                                            Vector2.zero, previewObject.transform,
-                                            shoreObject, waterParam.foamScale);
-        shoreLine.BakeQuads();
-        shoreLine.PlantQuads();
-        shoreLine.PlantShoreLine();
-        shoreLine.DestroyQuadsImmediate();
+        if (waterParam.makeShoreline)
+        {
+            GameObject shoreObject = new GameObject();
+            shoreObject.transform.name = "Shore Line";
+            shoreObject.transform.parent = previewObject.transform;
+            Shoreline shoreLine = new Shoreline(previewHeightMap, previewNeighboursData,
+                                                heightMapParam.uniformScale,
+                                                waterParam.waterLevel,
+                                                waterParam.material,
+                                                Vector2.zero, previewObject.transform,
+                                                shoreObject, waterParam.foamScale);
+            shoreLine.BakeQuads();
+            shoreLine.PlantQuads();
+            shoreLine.PlantShoreLine();
+            shoreLine.DestroyQuadsImmediate();
+        }
     }
 
     void Start()
@@ -250,25 +254,25 @@ public class ProceduralTerrain : MonoBehaviour
             heightMapParam.onChange -= MakePreviewTerrain;
             heightMapParam.onChange += MakePreviewTerrain;
 
-            foreach(NoiseParams param in heightMapParam.noises)
+            foreach (NoiseParams param in heightMapParam.noises)
             {
                 param.onChange -= MakePreviewTerrain;
                 param.onChange += MakePreviewTerrain;
             }
 
-            if(heightMapParam.thermalParam)
+            if (heightMapParam.thermalParam)
             {
                 heightMapParam.thermalParam.onChange -= MakePreviewTerrain;
                 heightMapParam.thermalParam.onChange += MakePreviewTerrain;
             }
 
-            if(heightMapParam.windParam)
+            if (heightMapParam.windParam)
             {
                 heightMapParam.windParam.onChange -= MakePreviewTerrain;
                 heightMapParam.windParam.onChange += MakePreviewTerrain;
             }
 
-            if(heightMapParam.falloffParam)
+            if (heightMapParam.falloffParam)
             {
                 heightMapParam.falloffParam.onChange -= MakePreviewTerrain;
                 heightMapParam.falloffParam.onChange += MakePreviewTerrain;
@@ -281,25 +285,25 @@ public class ProceduralTerrain : MonoBehaviour
             texturePreset.onChange += SetTexturesToMaterial;
         }
 
-        foreach(TreeParams param in vegetationParam)
+        foreach (TreeParams param in vegetationParam)
         {
             param.onChange -= PreviewForest;
             param.onChange += PreviewForest;
         }
 
-        foreach(FoliageParams param in quadFoliageParam)
+        foreach (FoliageParams param in quadFoliageParam)
         {
             param.onChange -= PreviewQuadFoliage;
             param.onChange += PreviewQuadFoliage;
         }
 
-        foreach(FoliageParams param in foliageParam)
+        foreach (FoliageParams param in foliageParam)
         {
             param.onChange -= PreviewFoliage;
             param.onChange += PreviewFoliage;
         }
 
-        if(waterParam)
+        if (waterParam)
         {
             waterParam.onChange -= PreviewWater;
             waterParam.onChange += PreviewWater;

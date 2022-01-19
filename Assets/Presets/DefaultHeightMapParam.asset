@@ -15,7 +15,7 @@ MonoBehaviour:
   autoUpdate: 1
   uniformScale: 1
   landOffset: {x: 0, y: 0}
-  heightScale: 24
+  heightScale: 64
   heightCurve:
     serializedVersion: 2
     m_Curve:
@@ -41,8 +41,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   noises:
-  - {fileID: 11400000, guid: 5facf727cdacfca1697b3b0f651c8e63, type: 2}
-  thermalParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}
-  windParam: {fileID: 11400000, guid: 03286e98dea5cb7c2b50bf81a0194438, type: 2}
-  falloffParam: {fileID: 0}
-  normMode: 0
+  - {fileID: 11400000, guid: a09edb1f684f12a94baef000184687a6, type: 2}
+  thermalParam: {fileID: 0}
+  windParam: {fileID: 0}
+  falloffParam: {fileID: 11400000, guid: 6b1a2f29ad07b83a48025b9a777f29b9, type: 2}
+  normMode: 1

@@ -28448,11 +28448,9 @@ MonoBehaviour:
   colliderFromLOD: 0
   lods:
   - level: 0
-    viewDistance: 70
-  - level: 0
     viewDistance: 200
   forestChunkDistance: 75
-  waterChunkDistance: 60
+  waterChunkDistance: 75
   foliageChunkDistance: 75
   quadFoliageChunkDistance: 20
 --- !u!1 &1956596147

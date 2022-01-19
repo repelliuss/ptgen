@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26f2ffbf555b91c8091c71cd6082d4b8, type: 3}
-  m_Name: DefaultWindParam
+  m_Script: {fileID: 11500000, guid: df049fe26c32cccdc971746c96beae39, type: 3}
+  m_Name: falloff
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  strength: 3
-  power: 0.3
+  a: 3
+  b: 2.2
+  scale: 64
+  density: 1

@@ -52,6 +52,6 @@ MonoBehaviour:
   noises:
   - {fileID: 11400000, guid: 8f1fd8e19a089ecf3b0555368fd5a2ff, type: 2}
   thermalParam: {fileID: 11400000, guid: 4d21f9b527af0c37581546cdc5b6eb85, type: 2}
-  windParam: {fileID: 11400000, guid: cb76ac2725ce5e6f4a8b238ebc8b240a, type: 2}
+  windParam: {fileID: 11400000, guid: 3632afa21e9917117a70fafa00af175e, type: 2}
   falloffParam: {fileID: 0}
   normMode: 0

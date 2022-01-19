@@ -50,9 +50,7 @@ class TerrainChunker : MonoBehaviour
         activeChunks = new List<Chunk>();
         chunks = new Dictionary<Vector2, Chunk>();
 
-        player.position = new Vector3(0,
-                                      terrain.heightMapParam.GetMaxHeight() + 5f,
-                                      0);
+        ResetPlayerPos();
 
         maxViewDistance = lods[lods.Length - 1].viewDistance;
         chunkSize = HeightMapParams.size - 3;
@@ -84,6 +82,13 @@ class TerrainChunker : MonoBehaviour
         }
 
         UpdateChunks();
+    }
+
+    public void ResetPlayerPos()
+    {
+        player.position = new Vector3(0,
+                                      terrain.heightMapParam.GetMaxHeight() + 5f,
+                                      0);
     }
 
     void Update()

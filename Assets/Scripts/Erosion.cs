@@ -37,7 +37,7 @@ public class Erosion
 
     public void Wind(ErosionParams windParam)
     {
-        for (int y = 10; y < height - 25; y += 10)
+        for (int y = 10; y < height - 15 * windParam.strength; y += 10)
         {
             for (int x = 10; x < width - 10; ++x)
             {

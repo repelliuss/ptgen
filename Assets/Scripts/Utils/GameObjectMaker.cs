@@ -31,7 +31,7 @@ public class GameObjectMaker
                       float color2bias)
     {
         //TODO: make materials not shared
-        Material[] materials = renderer.sharedMaterials;
+        Material[] materials = renderer.materials;
 
         foreach (Material mat in materials)
         {

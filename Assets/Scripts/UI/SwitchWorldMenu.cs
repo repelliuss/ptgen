@@ -27,21 +27,26 @@ public class SwitchWorldMenu : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
 
-        dropdownLabel.text = SceneManager.GetActiveScene().name;
-
         int sceneCount = SceneManager.sceneCountInBuildSettings;
+        int dropValue = 0;
         dropdown.options.Clear();
 
         for (int i = 0; i < sceneCount; i++)
         {
             string path = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
             dropdown.options.Add(new Dropdown.OptionData(path));
+            if(path == SceneManager.GetActiveScene().name)
+            {
+                dropValue = i;
+            }
         }
 
         seedInput.characterLimit = 7;
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        dropdown.value = dropValue;
 
         switchCameraText.text = "SWITCH TO " + player.GetCameraName();
     }
@@ -116,6 +121,11 @@ public class SwitchWorldMenu : MonoBehaviour
             Time.timeScale = 1f;
             isPaused = false;
             SceneManager.LoadScene(dropdown.value);
+            var chunker = FindObjectOfType<TerrainChunker>();
+            if(chunker != null)
+            {
+                chunker.ResetPlayerPos();
+            }
         }
     }
 

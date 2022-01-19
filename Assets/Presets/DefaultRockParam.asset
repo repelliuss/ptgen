@@ -14,24 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 1
   gobject: {fileID: -927199367670048503, guid: 8e41f14c6552d48e6a7992aaecc808e4, type: 3}
-  minHeight: 3
-  maxHeight: 8
+  minHeight: 0
+  maxHeight: 3
   minSlope: 0
-  maxSlope: 90
+  maxSlope: 7
   widthScale: {x: 1, y: 1}
   heightScale: {x: 1, y: 1}
   baseWidthScale: 0
   baseHeightScale: 0
   minScatter: 0
-  maxScatter: 0.46
-  xSpacing: 1
-  ySpacing: 1
+  maxScatter: 0.51
+  xSpacing: 1.48
+  ySpacing: 5.58
   color1: {r: 1, g: 1, b: 1, a: 1}
-  color2: {r: 0.1792453, g: 0.060030267, b: 0.060030267, a: 1}
+  color2: {r: 0.6603774, g: 0.6011926, b: 0.6011926, a: 1}
   color2Bias: 0
   minRotation: 0
   maxRotation: 360
   overlap: 0.01
   feather: 0.05
-  density: 0.014
+  density: 1
   maxCount: 100
