@@ -1,7 +1,45 @@
-* What is this?
+#+begin_quote
+Procedural, infinite terrain generator
+#+end_quote
 
-PTG will algorithmically generate endless terrains which user will be able to adjust interactively. It is a project for my own learning purposes, currently.
+[[https://github.com/repelliuss/.github/blob/7ff8ea66a2c02063df7de0c7492970390353ec5e/ptgen/demo.gif]]
 
-It is in early development stage.
+[[https://www.youtube.com/watch?v=HVqxorniKgc][Click here to watch full demo of features!]]
 
-You can watch a demo [[https://youtu.be/HVqxorniKgc][here.]]
+* Features
+
+- Procedural landscape with Perlin noise
+  - Multiple noise support
+  - Increased control with a height curve
+  - Erosion
+    - Thermal
+    - Wind
+    - Falloff
+- Object placement system
+- Texturing
+- Chunking System
+  - Distance based LOD
+
+* How to use?
+
+Add =ProceduralTerrain= and =TerrainChunker= to a object. =ProceduralTerrain= will spawn a preview object so you can watch the changes. =TerrainChunker= infinitely chunks terrain at run-time.
+
+Then, you need to play with the script parameters. Most of the parameters are packed and serialized. You can create a parameter asset through project context menu.
+
+* Preview Scenes
+
+Check directories in [[file:Assets/Scenes/]]. There are some scenes with a biome theme.
+
+* FAQ
+
+** Is this production ready?
+
+No, it is not.
+
+While you certainly can do, I wouldn't recommend it myself. It can be a lot efficient, flexible and also clean. Though you can use this project as a reference point. 
+
+** I see code similarities, why is that?
+
+You are right!
+
+This was a learning journey for me so I followed a couple of guides on the way.
