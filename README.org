@@ -1,10 +1,7 @@
-#+begin_quote
-Procedural, infinite terrain generator
-#+end_quote
+#+html:<p align="center"><i>Procedural, infinite terrain generator</i></p>
 
-[[https://github.com/repelliuss/.github/blob/7ff8ea66a2c02063df7de0c7492970390353ec5e/ptgen/demo.gif]]
-
-[[https://www.youtube.com/watch?v=HVqxorniKgc][Click here to watch full demo of features!]]
+#+html:<p align="center"><a href="https://www.youtube.com/watch?v=HVqxorniKgc"><img src="https://github.com/repelliuss/.github/blob/7ff8ea66a2c02063df7de0c7492970390353ec5e/ptgen/demo.gif"/></a></p>
+#+html:<p align="center">Click on the GIF to watch full feature demonstration</p>
 
 * Features
 
@@ -12,9 +9,6 @@ Procedural, infinite terrain generator
   - Multiple noise support
   - Increased control with a height curve
   - Erosion
-    - Thermal
-    - Wind
-    - Falloff
 - Object placement system
 - Texturing
 - Chunking System
